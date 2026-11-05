@@ -14,7 +14,8 @@
     "test": "./scripts/node.sh vitest run",
     "test:e2e": "./scripts/node.sh playwright test",
     "format": "./scripts/node.sh prettier --write .",
-    "format:check": "./scripts/node.sh prettier --check ."
+    "format:check": "./scripts/node.sh prettier --check .",
+    "scan:privacy": "./scripts/node.sh scripts/scan-privacy.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
