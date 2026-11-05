@@ -17,5 +17,7 @@ describe("findLeaks", () => {
     expect(findLeaks("<lastmod>2026-11-05</lastmod>")).toEqual([]);
     expect(findLeaks("AUC 0.7738 · 30,000 clientes · 3 días → 5 min")).toEqual([]);
     expect(findLeaks('<path d="M12.25 4.50L100.00 200.00"/>')).toEqual([]);
+    expect(findLeaks("box-shadow: 0 25px 50px -12px #00000040")).toEqual([]);
+    expect(findLeaks("assets/profile.VhoLbKp__12345678.webp")).toEqual([]);
   });
 });

@@ -3,10 +3,11 @@
 const rules = [
   {
     id: "pe-mobile",
-    pattern: /(?:\+?51[\s-]?)?(?<![\d.,])9\d{2}[\s-]?\d{3}[\s-]?\d{3}(?![\d.,])/g,
+    pattern: /(?:\+?51[\s-]?)?(?<![\w.,#])9\d{2}[\s-]?\d{3}[\s-]?\d{3}(?![\w.,])/g,
   },
   { id: "country-code", pattern: /\+51(?!\d)|\+51\s/g },
-  { id: "eight-digit-id", pattern: /(?<![\d.,\-/])\d{8}(?![\d.,\-/])/g },
+  // Digits glued to letters or "#" are hashes or hex colors (#00000040), not identifiers.
+  { id: "eight-digit-id", pattern: /(?<![\w.,\-/#])\d{8}(?![\w.,\-/])/g },
 ];
 
 /** Returns every suspicious match in `text`, with the rule that caught it. */
