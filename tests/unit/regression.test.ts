@@ -18,6 +18,15 @@ describe("ols", () => {
   });
 });
 
+describe("standard errors", () => {
+  it("are positive and the intercept's grows with the distance of x̄ from zero", () => {
+    const near = ols(simulate({ n: 30, seed: 1 }).map((p) => ({ x: p.x - 5, y: p.y })));
+    const far = ols(simulate({ n: 30, seed: 1 }));
+    expect(far.slopeSE).toBeGreaterThan(0);
+    expect(far.interceptSE).toBeGreaterThan(near.interceptSE);
+  });
+});
+
 describe("simulate", () => {
   it("is deterministic for a given seed", () => {
     expect(simulate({ n: 5, seed: 3 })).toEqual(simulate({ n: 5, seed: 3 }));

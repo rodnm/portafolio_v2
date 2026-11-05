@@ -41,7 +41,7 @@ case "$tool" in
     ;;
   prettier) write_paths+=("$ROOT") ;;
   scripts/*)
-    write_paths+=("$ROOT/src/assets/generated" "$ROOT/public/generated" "$ROOT/public/cv" "$ROOT/test-results")
+    write_paths+=("$ROOT/src/assets/generated" "$ROOT/public/generated" "$ROOT/public/cv" "$ROOT/public/og" "$ROOT/test-results")
     [ -n "${PLAYWRIGHT_BROWSERS_PATH:-}" ] && read_paths+=("$PLAYWRIGHT_BROWSERS_PATH")
     ;;
 esac

@@ -10,7 +10,9 @@ export interface Fit {
   intercept: number;
   slope: number;
   slopeSE: number;
+  interceptSE: number;
   r2: number;
+  n: number;
   meanX: number;
   /** Half width of the 95% confidence band for the mean prediction at x. */
   bandHalfWidth: (x: number) => number;
@@ -47,7 +49,9 @@ export function ols(points: Point[]): Fit {
     intercept,
     slope,
     slopeSE: s / Math.sqrt(sxx),
+    interceptSE: s * Math.sqrt(1 / n + meanX ** 2 / sxx),
     r2: sst === 0 ? 1 : 1 - sse / sst,
+    n,
     meanX,
     bandHalfWidth: (x) => t * s * Math.sqrt(1 / n + (x - meanX) ** 2 / sxx),
   };

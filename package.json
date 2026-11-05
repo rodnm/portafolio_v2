@@ -16,7 +16,8 @@
     "format": "./scripts/node.sh prettier --write .",
     "format:check": "./scripts/node.sh prettier --check .",
     "scan:privacy": "./scripts/node.sh scripts/scan-privacy.mjs",
-    "cv:pdf": "./scripts/node.sh scripts/make-cv-pdf.mjs"
+    "cv:pdf": "./scripts/node.sh scripts/make-cv-pdf.mjs",
+    "og": "./scripts/node.sh scripts/make-og.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

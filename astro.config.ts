@@ -21,7 +21,7 @@ export default defineConfig({
   integrations: [
     svelte(),
     sitemap({
-      filter: (page) => !page.includes("/design/"),
+      filter: (page) => !/\/(design|og)\//.test(page),
       i18n: { defaultLocale: "es", locales: { es: "es-PE", en: "en-US" } },
     }),
   ],
