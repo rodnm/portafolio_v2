@@ -3,7 +3,7 @@
     id: string;
     title: string;
     summary: string;
-    metric?: string;
+    metric?: string | undefined;
     year: number;
     context: string;
     categories: string[];
