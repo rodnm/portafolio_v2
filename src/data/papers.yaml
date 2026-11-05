@@ -1,0 +1,7 @@
+# Working papers. "classified" oculta el título y la etapa actual hasta la publicación.
+- id: informalidad
+  classified: true
+  topic:
+    es: "█████ laboral"
+    en: "Labor █████"
+  stages: [question, data, estimation, draft]

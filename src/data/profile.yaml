@@ -57,3 +57,8 @@
         Risk,
         Analytics,
       ]
+  cvProfile:
+    es: >-
+      Economista de la PUCP con formación en ciencia de datos y experiencia desarrollando soluciones analíticas de punta a punta. Mi formación me da el criterio para plantear bien la pregunta y leer los resultados con sentido de negocio. La práctica me dio las herramientas para integrar datos, construir modelos y llevar el análisis a productos que otros usan a diario. Lo que más valoro es cerrar el ciclo: pasar del problema a una recomendación clara.
+    en: >-
+      PUCP economist trained in data science, with experience building end-to-end analytical solutions. My training gives me the judgment to frame the question well and read results with business sense. Practice gave me the tools to integrate data, build models and turn the analysis into products people use every day. What I value most is closing the loop: going from the problem to a clear recommendation.

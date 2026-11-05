@@ -28,6 +28,7 @@ const profile = defineCollection({
       en: z.array(z.string().min(1)).min(1),
     }),
     interests: z.object({ es: z.array(z.string()).min(1), en: z.array(z.string()).min(1) }),
+    cvProfile: l10n,
   }),
 });
 
@@ -122,4 +123,92 @@ const archive = defineCollection({
   }),
 });
 
-export const collections = { profile, experience, skills, education, projects, archive };
+export const credentialCategories = [
+  "econometrics",
+  "impact",
+  "data-eng",
+  "ds-ml",
+  "bi",
+  "finance",
+  "languages",
+  "academic",
+  "other",
+] as const;
+
+const credentials = defineCollection({
+  loader: file("src/data/credentials.yaml"),
+  schema: ({ image }) =>
+    z.object({
+      category: z.enum(credentialCategories),
+      title: l10n,
+      issuer: z.string(),
+      date: yearMonth,
+      start: yearMonth.optional(),
+      hours: z.number().positive().optional(),
+      grade: z.string().optional(),
+      items: z.array(l10n).optional(),
+      highlight: z.boolean().default(false),
+      scholarship: z.boolean().default(false),
+      verify: z.url().optional(),
+      note: l10n.optional(),
+      thumb: image(),
+    }),
+});
+
+const events = defineCollection({
+  loader: file("src/data/events.yaml"),
+  schema: ({ image }) =>
+    z.object({
+      kind: z.enum(["hackathon", "datathon", "challenge", "sport"]),
+      title: l10n,
+      organizer: z.string(),
+      date: yearMonth,
+      start: yearMonth.optional(),
+      result: l10n,
+      summary: l10n,
+      note: l10n.optional(),
+      finalist: z.boolean().default(false),
+      latest: z.boolean().default(false),
+      link: z.url().optional(),
+      thumb: image(),
+    }),
+});
+
+const studies = defineCollection({
+  loader: file("src/data/studies.yaml"),
+  schema: z.object({
+    title: l10n,
+    org: z.string(),
+    period: l10n,
+    start: yearMonth.optional(),
+    end: yearMonth.optional(),
+  }),
+});
+
+const papers = defineCollection({
+  loader: file("src/data/papers.yaml"),
+  schema: z.object({
+    classified: z.boolean().default(false),
+    topic: l10n,
+    title: l10n.optional(),
+    stages: z
+      .array(z.enum(["question", "data", "estimation", "draft", "submitted", "published"]))
+      .min(1),
+    pdf: z.string().optional(),
+    bibtex: z.string().optional(),
+    doi: z.string().optional(),
+  }),
+});
+
+export const collections = {
+  profile,
+  experience,
+  skills,
+  education,
+  projects,
+  archive,
+  credentials,
+  events,
+  studies,
+  papers,
+};
