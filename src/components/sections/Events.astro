@@ -1,0 +1,125 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Brackets from "../hud/Brackets.astro";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+import { formatMonth, formatPeriod } from "../../lib/format";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const all = (await getCollection("events")).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const missions = all.filter((e) => e.data.kind !== "sport");
+const others = all.filter((e) => e.data.kind === "sport");
+---
+
+<section id="events" aria-labelledby="events-title" class="border-b border-hair">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="events-title"
+      chapter={t.events.chapter}
+      title={t.events.title}
+      kicker={t.events.kicker}
+    />
+
+    <ol class="border-b border-hair">
+      {missions.map((e) => (
+        <li
+          class:list={[
+            "grid gap-6 border-t border-hair py-8 md:grid-cols-[minmax(0,14rem)_1fr]",
+            e.data.latest && "md:grid-cols-[minmax(0,22rem)_1fr]",
+          ]}
+        >
+          <div class="relative self-start bg-paper p-2">
+            <Image
+              src={e.data.thumb}
+              alt={`${t.credentials.thumbAlt}: ${e.data.title[lang]}`}
+              widths={e.data.latest ? [352, 704] : [224, 448]}
+              sizes={
+                e.data.latest
+                  ? "(min-width: 768px) 22rem, 100vw"
+                  : "(min-width: 768px) 14rem, 100vw"
+              }
+              class="aspect-video w-full object-contain"
+            />
+            <Brackets />
+          </div>
+          <div class="flex flex-col gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+              {e.data.latest && (
+                <Cap class="inline-flex items-center gap-2 bg-ink px-2 py-1 text-canvas">
+                  <span
+                    class="size-2 rounded-full bg-signal motion-safe:animate-blink"
+                    aria-hidden="true"
+                  />
+                  {t.events.latest}
+                </Cap>
+              )}
+              <Cap dim>
+                {formatMonth(e.data.date, lang)} · {e.data.organizer}
+              </Cap>
+            </div>
+            <h3
+              class:list={[
+                "font-medium tracking-tight",
+                e.data.latest ? "text-section" : "text-display",
+              ]}
+            >
+              {e.data.title[lang]}
+            </h3>
+            <p>
+              <span
+                class:list={[
+                  "inline-block border px-2 py-1 font-mono text-cap uppercase",
+                  e.data.finalist ? "border-accent bg-accent text-paper" : "border-hair",
+                ]}
+              >
+                {e.data.result[lang]}
+              </span>
+            </p>
+            <p class="max-w-3xl leading-relaxed">{e.data.summary[lang]}</p>
+            {e.data.note && <p class="max-w-3xl text-sm text-ink-dim">{e.data.note[lang]}</p>}
+            {e.data.link && (
+              <a
+                href={e.data.link}
+                target="_blank"
+                rel="noopener"
+                class="font-mono text-cap text-accent uppercase hover:underline"
+              >
+                {t.events.project} ↗
+              </a>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    {others.length > 0 && (
+      <div class="mt-12">
+        <h3 class="mb-4 text-display font-medium">{t.events.others}</h3>
+        <ul class="flex flex-col gap-4">
+          {others.map((e) => (
+            <li class="flex flex-col gap-2 border-l-2 border-accent pl-4">
+              <Cap dim>
+                {e.data.start
+                  ? formatPeriod(e.data.start, e.data.date, lang)
+                  : formatMonth(e.data.date, lang)}{" "}
+                · {e.data.organizer}
+              </Cap>
+              <p class="text-xl font-medium">
+                {e.data.result[lang]} — {e.data.title[lang]}
+              </p>
+              <p class="max-w-3xl text-ink-dim">{e.data.summary[lang]}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</section>

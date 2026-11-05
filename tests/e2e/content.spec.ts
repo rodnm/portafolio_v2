@@ -1,4 +1,18 @@
 import { expect, test } from "@playwright/test";
+import { findLeaks } from "../../scripts/privacy.mjs";
+
+/** Visible text with a separator between text nodes, so adjacent numbers never merge. */
+async function visibleText(
+  page: import("@playwright/test").Page,
+  selector: string,
+): Promise<string> {
+  return page.locator(selector).evaluate((root) => {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const parts: string[] = [];
+    while (walker.nextNode()) parts.push(walker.currentNode.textContent ?? "");
+    return parts.join(" | ");
+  });
+}
 
 const homes = [
   { path: "./", lang: "es", headline: /economista/, about: "Sobre mí", metric: "3 días → 5 min" },
@@ -36,9 +50,9 @@ for (const home of homes) {
       await expect(page.locator("#stack tbody tr")).toHaveCount(7);
     });
 
-    test("never shows a phone number", async ({ page }) => {
+    test("never shows a phone number or an ID", async ({ page }) => {
       await page.goto(home.path);
-      await expect(page.locator("body")).not.toContainText(/\+51|9\d{2}\s?\d{3}\s?\d{3}/);
+      expect(findLeaks(await visibleText(page, "body"))).toEqual([]);
     });
   });
 }
