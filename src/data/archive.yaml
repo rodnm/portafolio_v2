@@ -1,0 +1,178 @@
+# Otros proyectos (fuente: README de cada repositorio). Se muestran en el archivo filtrable.
+- id: clasificador-noticias
+  title:
+    es: Del titular al clasificador
+    en: From headline to classifier
+  summary:
+    es: Clasificador de noticias de diarios peruanos con scraping ético, zero-shot, LLM y DistilBERT afinado.
+    en: News classifier for Peruvian newspapers using ethical scraping, zero-shot, an LLM and a fine-tuned DistilBERT.
+  metric: "F1 macro 0.908 · 23 ms"
+  year: 2026
+  context:
+    es: Tarea · Python Intermedio, PUCP
+    en: Assignment · Intermediate Python, PUCP
+  categories: [ia]
+  stack: [Python, DistilBERT, Hugging Face, Streamlit]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/intermediate-python-hw" }
+    - { kind: demo, url: "https://del-titular-al-clasificador-rodnm.streamlit.app" }
+    - { kind: video, url: "https://youtu.be/7wBcUbhUgcs" }
+- id: voces-documentos
+  title:
+    es: Voces y documentos
+    en: Voices and documents
+  summary:
+    es: OCR y reconocimiento de voz sobre 25 documentos y 40.6 minutos de audio.
+    en: OCR and speech recognition over 25 documents and 40.6 minutes of audio.
+  metric: "CER 0.14 · WER 0.14"
+  year: 2026
+  context:
+    es: Tarea · Python Intermedio, PUCP
+    en: Assignment · Intermediate Python, PUCP
+  categories: [ia]
+  stack: [Python, OCR, ASR, Streamlit]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/intermediate-python-hw" }
+    - { kind: demo, url: "https://voces-y-documentos-rodnm.streamlit.app" }
+- id: emergencias-lluvias
+  title:
+    es: ¿Declara el Estado emergencias donde más llueve?
+    en: Does the State declare emergencies where it rains the most?
+  summary:
+    es: Lluvias y decretos de emergencia en 25 departamentos durante la temporada 2023.
+    en: Rainfall and emergency decrees across 25 departments in the 2023 rainy season.
+  metric: "r = −0.22"
+  year: 2026
+  context:
+    es: Proyecto grupal (4 personas)
+    en: Group project (4 people)
+  categories: [politica, datos]
+  stack: [Python, Open-Meteo API, Folium, Streamlit]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/Python-G2" }
+    - { kind: demo, url: "https://emergencies-rainfall-peru-2023.streamlit.app" }
+- id: aeroq
+  title:
+    es: AeroQ Optimizer
+    en: AeroQ Optimizer
+  summary:
+    es: Asignación de puertas de embarque como problema cuadrático de asignación, clásico frente a QAOA.
+    en: Airport gate assignment framed as a quadratic assignment problem, classical versus QAOA.
+  metric: "C* = 340"
+  year: 2026
+  context:
+    es: Hackatón IBM Qiskit Fall Fest 2026 · equipo
+    en: IBM Qiskit Fall Fest 2026 hackathon · team
+  categories: [ia]
+  stack: [Qiskit, QAOA, QUBO, FastAPI, React]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/hackathon-qiskit-fall-fest-2026" }
+- id: openalex
+  title:
+    es: OpenAlex Research Dashboard
+    en: OpenAlex Research Dashboard
+  summary:
+    es: Pipeline ETL bibliométrico con arquitectura Medallion en Airflow y un dashboard interactivo.
+    en: Bibliometric ETL pipeline with a Medallion architecture on Airflow and an interactive dashboard.
+  year: 2025
+  context:
+    es: Proyecto independiente
+    en: Independent project
+  categories: [datos, bi]
+  stack: [Python, Apache Airflow, Docker, Parquet, Streamlit, Plotly]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/openalex-research-dashboard" }
+    - { kind: demo, url: "https://openalex-research-dashboard.streamlit.app/" }
+- id: portfolio-agent
+  title:
+    es: Agente RAG del portafolio
+    en: Portfolio RAG agent
+  summary:
+    es: Agente que responde preguntas sobre mi trabajo con recuperación de documentos y evaluación.
+    en: Agent that answers questions about my work with document retrieval and evaluation.
+  metric: "Hit Rate@5 0.783 · MRR 0.576"
+  year: 2026
+  context:
+    es: Proyecto independiente
+    en: Independent project
+  categories: [ia]
+  stack: [Python, Pydantic AI, RAG, Streamlit]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/Portfolio-AI-Agent" }
+    - { kind: demo, url: "https://portfolio-agent.streamlit.app" }
+- id: fullstack-agent
+  title:
+    es: Full Stack Code Agent
+    en: Full Stack Code Agent
+  summary:
+    es: Agente de IA que programa aplicaciones web, con compresión de contexto en tiempo de ejecución.
+    en: AI agent that builds web apps, with runtime context compression.
+  year: 2026
+  context:
+    es: Proyecto independiente
+    en: Independent project
+  categories: [ia]
+  stack: [Python, Gemini, Gradio]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/FullStackAgent" }
+- id: crypto-monitor
+  title:
+    es: Monitor del mercado cripto
+    en: Crypto market monitor
+  summary:
+    es: ETL desde la API de CoinGecko con un treemap de capitalización y tendencias a 7 días.
+    en: ETL from the CoinGecko API with a market-cap treemap and 7-day trends.
+  year: 2025
+  context:
+    es: Proyecto independiente
+    en: Independent project
+  categories: [datos, bi]
+  stack: [Python, Streamlit, Plotly]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/crypto-monitor" }
+    - { kind: demo, url: "https://crypto-monitor-dashboard.streamlit.app" }
+- id: tierras-raras
+  title:
+    es: Comercio mundial de tierras raras, 1995–2022
+    en: Global rare-earth trade, 1995–2022
+  summary:
+    es: Análisis exploratorio con datos del Observatorio de Complejidad Económica.
+    en: Exploratory analysis with data from the Observatory of Economic Complexity.
+  year: 2024
+  context:
+    es: Proyecto independiente
+    en: Independent project
+  categories: [bi]
+  stack: [R, Power BI, DAX]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/project_powebi_rare-earth" }
+- id: bcrp-tipo-cambio
+  title:
+    es: Tipo de cambio del BCRP
+    en: BCRP exchange rate
+  summary:
+    es: Web scraping de las series del BCRP para obtener el tipo de cambio de cualquier año.
+    en: Web scraping of central bank (BCRP) series to get the exchange rate for any year.
+  year: 2025
+  context:
+    es: Proyecto independiente
+    en: Independent project
+  categories: [datos]
+  stack: [R, rvest]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/bcrp-tasa-de-cambio" }
+- id: revista-dashboards
+  title:
+    es: Tableros de Revista Económica
+    en: Revista Económica dashboards
+  summary:
+    es: Tableros trimestrales de desempeño de contenidos para la revista estudiantil.
+    en: Quarterly content-performance dashboards for the student magazine.
+  year: 2024
+  context:
+    es: Voluntariado · Revista Económica PUCP
+    en: Volunteering · Revista Económica PUCP
+  categories: [bi]
+  stack: [Power BI]
+  links:
+    - { kind: repo, url: "https://github.com/rodnm/economica2024_trim2" }

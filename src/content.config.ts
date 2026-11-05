@@ -1,5 +1,5 @@
 import { defineCollection } from "astro:content";
-import { file } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 /** A text that must exist in both languages. */
@@ -71,4 +71,55 @@ const education = defineCollection({
   }),
 });
 
-export const collections = { profile, experience, skills, education };
+export const categories = [
+  "econometria",
+  "riesgo",
+  "geoespacial",
+  "datos",
+  "ia",
+  "bi",
+  "politica",
+] as const;
+const category = z.enum(categories);
+const link = z.object({
+  kind: z.enum(["repo", "demo", "report", "story", "video", "post"]),
+  url: z.url(),
+});
+
+const projects = defineCollection({
+  // One Markdown file per language: src/content/projects/{es,en}/<slug>.md
+  loader: glob({ pattern: "{es,en}/*.md", base: "src/content/projects" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().min(1),
+      question: z.string().min(1),
+      result: z.object({ value: z.string().min(1), label: z.string().min(1) }),
+      metrics: z
+        .array(z.object({ value: z.string().min(1), label: z.string().min(1) }))
+        .default([]),
+      stack: z.array(z.string()).min(1),
+      cover: image(),
+      coverAlt: z.string().min(1),
+      year: z.number().int(),
+      order: z.number().int(),
+      context: z.string().min(1),
+      categories: z.array(category).min(1),
+      links: z.array(link).min(1),
+    }),
+});
+
+const archive = defineCollection({
+  loader: file("src/data/archive.yaml"),
+  schema: z.object({
+    title: l10n,
+    summary: l10n,
+    metric: z.string().optional(),
+    year: z.number().int(),
+    context: l10n,
+    categories: z.array(category).min(1),
+    stack: z.array(z.string()).min(1),
+    links: z.array(link).min(1),
+  }),
+});
+
+export const collections = { profile, experience, skills, education, projects, archive };
