@@ -31,7 +31,9 @@ esac
 TMP="${TMPDIR:-/tmp}"
 # Vite probes these WSL markers with existsSync, which throws under the permission model.
 read_paths=("$ROOT" "$TMP" /proc/sys/fs/binfmt_misc/WSLInterop /run/WSL)
-write_paths=("$TMP" "$ROOT/.astro" "$ROOT/node_modules/.astro" "$ROOT/node_modules/.vite" "$ROOT/node_modules/.vitest" "$ROOT/node_modules/.vitest-cache" "$ROOT/node_modules/.vite-temp")
+# No grant may extend the name node_modules/.vitest (e.g. .vitest-cache/): Node then denies
+# mkdir on .vitest itself, and Vitest cannot create its API token on a fresh checkout.
+write_paths=("$TMP" "$ROOT/.astro" "$ROOT/node_modules/.astro" "$ROOT/node_modules/.vite" "$ROOT/node_modules/.vitest" "$ROOT/node_modules/.vite-temp")
 
 case "$tool" in
   astro) write_paths+=("$ROOT/dist" "$ROOT/src/assets/generated") ;;
