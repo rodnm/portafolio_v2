@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import Brackets from "../hud/Brackets.astro";
 import Cap from "../hud/Cap.astro";
 import LinkChips from "./LinkChips.astro";
+import { projectRow } from "./emphasis";
 import type { Locale } from "../../i18n/locales";
 import { localePath } from "../../i18n/routes";
 import type { UI } from "../../i18n/ui";
@@ -23,6 +24,7 @@ const href = localePath(lang, `projects/${projectSlug(project)}`);
 <article
   class:list={[
     "grid gap-6 border-t border-hair py-8",
+    projectRow,
     lead
       ? "lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-10"
       : "md:grid-cols-[minmax(0,16rem)_1fr] lg:grid-cols-1",

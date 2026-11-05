@@ -34,6 +34,10 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
 - **S19** Kung Fu: «si tengo las medallas, pero no entregan diplomas ni certificados esas competencias»
 - **S20** Metodología: skills ODD y HDD, y «tambien quiero que uses las herramientas de https://github.com/Gentleman-Programming/gentle-ai»
 - **S21** Rúbrica de la guía PDF: «Sitio vivo en usuario.github.io · Inicio: foto, bio en dos líneas, links y CV en PDF · Tres proyectos con imagen, pregunta, resultado y links · Un video, un paper o una demo embebidos · Se ve bien en el celular y no tiene links rotos»
+- **S22** «en "La huella de la minería en el Perú, 2013–2025", el video que lleve a este link: https://lnkd.in/p/edJbsVDx»
+- **S23** «en "Modelo de riesgo crediticio sin fuga de datos", que informe lleve a este link "https://github-html-preview.dohyeon5626.com/?https://github.com/rodnm/credit-risk-project/blob/HEAD/reports/credit_risk_report.html&[token cifrado omitido]&1793858247927"». El token se omite aquí a propósito (ver L22).
+- **S24** «al pasar por encima de cada proyecto en "Archivo" me gustaria que su seccion pudiera ser resaltada para marcar enfasis que esta siendo apuntada por el mouse y que el cuadro de los botones se ilumine de blanco para hacer enfasis de que quiero que seleccione esos botones para interactuar con el proyecto. en general esa funcionalidad me gustaria tener en todos los proyectos del portafolio»
+- **S25** «en realidad deberia existir una seccion de posts, publicaciones, o algo asi donde pueda escribir sobre los trabajos que hice y analizarlos o algo asi»
 
 ## Tasks
 
@@ -53,7 +57,10 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
 | T6 Detalles creativos + rendimiento | S4, S12 | inline | hecho | e2e `details.spec.ts` 8/8 (consola, indicador de capítulo, sin JS); Lighthouse móvil 100/99/100/100 |
 | T7 QA + judgment-day + publicación | S10, S21 | inline + 2 jueces | hecho | judgment-day APPROVED; e2e 114/114; PR #1 → `a1e3616`; deploy 41969254514 (L19) |
 | T8 Mudanza a la raíz: v1 → `portafolio_v1`, v2 → `rodnm.github.io` | S10, S21 | inline | hecho | `rodnm/portafolio_v1#1` → `8391b6e`; PR #2 → `2da99a3`; e2e `sw.spec.ts` ROJO→VERDE; ver L21 |
-| T9 Pendientes: Log del deploy, resumen del job en `node.sh`, bundle local, Artifact provisional | S21 | inline | hecho excepto el Artifact (lo borra el usuario) | L19; `node.sh` `0a48fd2`; bundle borrado |
+| T9 Pendientes: Log del deploy, resumen del job en `node.sh`, bundle local, Artifact provisional | S21 | inline | hecho (el usuario borró el Artifact) | L19; `node.sh` `0a48fd2`; bundle borrado |
+| T10 Enlaces: video de huella minera e informe de riesgo crediticio | S22, S23 | inline | hecho | `9e08de0`; unit ROJO (2 fallos: `reel.mp4` y el informe directo) → VERDE 7/7; guarda contra tokens en links |
+| T11 Resaltado al pasar el mouse en filas de proyectos y archivo | S24 | inline | hecho | `21ceb90`; e2e ROJO (la fila no cambiaba de fondo) → VERDE; suite 116 e2e, 28 unit |
+| T12 Sección de publicaciones | S25 | — | pendiente: decisión del usuario | — |
 
 ## Log
 
@@ -86,3 +93,11 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
     - Los huérfanos `c966ea7` y `fcb45b4` siguen accesibles, ahora bajo `rodnm/rodnm.github.io`.
     - El `og:image` de v1 apunta a `/images/portfolio-v1.png`, que no existía antes de la mudanza.
     - Los clones locales de v1 deben apuntar a `rodnm/portafolio_v1`.
+- **L22** (2026-11-05) Pedidos S22–S25, citados textualmente en Specs.
+  - **S23:** el link pedido lleva un token cifrado (JWE `dir`/`A128GCM`). El visor lo envía a `api.dohyeon5626.com/github-html-preview/content/<token>/…`, que sirve cualquier ruta con el acceso de GitHub del usuario. Sin token, el visor descarga el archivo de `raw.githubusercontent.com`. `rodnm/credit-risk-project` es público y su informe responde 200 sin autenticación, así que se usa la URL sin token: muestra el mismo informe y no publica una credencial (S11).
+  - **S24:** al pasar el mouse o con foco de teclado, la fila se resalta con `paper` y una barra `accent`. Sus botones se rellenan con `ink`: casi blanco en tema oscuro, azul marino en tema claro, para conservar el contraste.
+  - **S25:** queda pendiente de una decisión del usuario sobre el diseño de la sección.
+- **L23** T10 y T11, con verificación en un clon limpio (Linux, Node 26.13.0, Chromium de Playwright).
+  - **T10:** los tests unitarios fallaron con los links anteriores y pasaron con los nuevos.
+  - **T11:** el e2e nuevo falló porque la fila no cambiaba de fondo y pasó con `emphasis.ts`. La suite quedó en `format:check`, `check`, 28 unit, `build`, `scan:privacy` y 116 e2e.
+  - **Variantes de hover:** primero creí que la regla `group-hover/row:` ganaba al `hover:` propio del botón, pero mi `grep` había coincidido con los atributos `class` del HTML. El test en el navegador mostró que las variantes simples funcionan, así que se mantuvieron. Contraste del texto sobre el botón encendido (`canvas` sobre `ink`): 14.7 en tema claro y 15.8 en oscuro. Sobre `accent`: 5.2 y 8.0.

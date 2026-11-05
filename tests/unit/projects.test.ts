@@ -43,4 +43,29 @@ describe("featured projects", () => {
       }
     }
   });
+
+  it("never embed an encrypted access token in a link", () => {
+    for (const lang of ["es", "en"]) {
+      for (const file of es) {
+        const links = frontmatter(lang, file).links as { url: string }[];
+        for (const { url } of links) expect(url, `${lang}/${file}`).not.toMatch(/eyJ[\w-]+\./);
+      }
+    }
+  });
+});
+
+describe("requested project links", () => {
+  const link = (file: string, kind: string) =>
+    (frontmatter("es", file).links as { kind: string; url: string }[]).find((l) => l.kind === kind)
+      ?.url;
+
+  it("sends the mining video to the LinkedIn post", () => {
+    expect(link("huella-minera.md", "video")).toBe("https://lnkd.in/p/edJbsVDx");
+  });
+
+  it("opens the credit risk report in the HTML preview without a token", () => {
+    expect(link("riesgo-crediticio.md", "report")).toBe(
+      "https://github-html-preview.dohyeon5626.com/?https://github.com/rodnm/credit-risk-project/blob/HEAD/reports/credit_risk_report.html",
+    );
+  });
 });

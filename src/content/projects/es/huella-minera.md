@@ -18,7 +18,7 @@ categories: [econometria, geoespacial, politica]
 links:
   - { kind: repo, url: "https://github.com/rodnm/huella-minera-peru" }
   - { kind: demo, url: "https://claude.ai/artifact/TLWHpf4ZSXAAhyBEZTmKh7" }
-  - { kind: video, url: "https://github.com/rodnm/huella-minera-peru/blob/HEAD/reel/reel.mp4" }
+  - { kind: video, url: "https://lnkd.in/p/edJbsVDx" }
   - {
       kind: report,
       url: "https://github.com/rodnm/huella-minera-peru/blob/HEAD/docs/metodologia_y_hallazgos.md",
