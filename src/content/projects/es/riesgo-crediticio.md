@@ -19,7 +19,7 @@ links:
   - { kind: repo, url: "https://github.com/rodnm/credit-risk-project" }
   - {
       kind: report,
-      url: "https://github.com/rodnm/credit-risk-project/blob/HEAD/reports/credit_risk_report.html",
+      url: "https://github-html-preview.dohyeon5626.com/?https://github.com/rodnm/credit-risk-project/blob/HEAD/reports/credit_risk_report.html",
     }
 ---
 
