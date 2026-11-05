@@ -77,6 +77,12 @@ for (const lang of ["es", "en"] as const) {
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(
         "Rodrigo Andrés Norabuena Mascaraqui",
       );
+      // S17: "Finalist" always travels with its note about the participation certificate.
+      await expect(page.locator("main")).toContainText(
+        lang === "es"
+          ? "La constancia oficial es de participación"
+          : "The official certificate is a participation certificate",
+      );
       const href = await page.locator('a[href$=".pdf"]').first().getAttribute("href");
       const pdf = await request.get(href!);
       expect(pdf.status()).toBe(200);

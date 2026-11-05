@@ -8,9 +8,10 @@ import ThemeToggle from "./ThemeToggle.astro";
 interface Props {
   lang: Locale;
   t: UI;
+  switchHref: string;
 }
 
-const { lang, t } = Astro.props;
+const { lang, t, switchHref } = Astro.props;
 const home = localePath(lang);
 const links = [
   { id: "about", label: t.nav.about },
@@ -59,7 +60,7 @@ const links = [
           ))}
         </ul>
       </nav>
-      <LangSwitch lang={lang} t={t} />
+      <LangSwitch lang={lang} t={t} href={switchHref} />
       <ThemeToggle t={t} />
       <button
         type="button"

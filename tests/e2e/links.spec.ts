@@ -42,3 +42,11 @@ test("internal links and images resolve on every page", async ({
   expect(broken).toEqual([]);
   expect(seen.size).toBeGreaterThan(10);
 });
+
+test("pages without a translation switch language to the other home", async ({ page, request }) => {
+  await page.goto("./404/");
+  const href = await page.locator("[data-lang-switch]").getAttribute("href");
+  expect(href).toMatch(/\/en\/$/);
+  expect((await request.get(new URL(href!, page.url()).href)).status()).toBe(200);
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(0);
+});

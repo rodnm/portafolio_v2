@@ -1,16 +1,17 @@
 import { expect, test } from "@playwright/test";
+import { at } from "./base";
 
 const langs = [
   {
     home: "./",
     detail: "./proyectos/huella-minera/",
-    other: /\/en\/projects\/huella-minera\/$/,
+    other: at("en/projects/huella-minera/"),
     lang: "es",
   },
   {
     home: "./en/",
     detail: "./en/projects/huella-minera/",
-    other: /\/portafolio_v2\/proyectos\/huella-minera\/$/,
+    other: at("proyectos/huella-minera/"),
     lang: "en",
   },
 ] as const;

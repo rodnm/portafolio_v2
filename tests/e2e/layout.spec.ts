@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
+import { at } from "./base";
 
 const pages = ["./", "./en/", "./design/"];
 const widths = [360, 390, 768, 1024, 1280, 1440];
@@ -44,10 +45,10 @@ test.describe("language switch", () => {
   test("goes to the equivalent page in the other language and back", async ({ page }) => {
     await page.goto("./");
     await page.locator("[data-lang-switch]").click();
-    await expect(page).toHaveURL(/\/portafolio_v2\/en\/(#.*)?$/);
+    await expect(page).toHaveURL(at("en/", { hash: true }));
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await page.locator("[data-lang-switch]").click();
-    await expect(page).toHaveURL(/\/portafolio_v2\/(#.*)?$/);
+    await expect(page).toHaveURL(at("", { hash: true }));
     await expect(page.locator("html")).toHaveAttribute("lang", "es");
   });
 
@@ -55,11 +56,11 @@ test.describe("language switch", () => {
     await page.goto("./en/");
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute(
       "href",
-      /\/portafolio_v2\/$/,
+      at(""),
     );
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
       "href",
-      /\/portafolio_v2\/en\/$/,
+      at("en/"),
     );
   });
 });

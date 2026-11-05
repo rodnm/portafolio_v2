@@ -84,7 +84,7 @@
     else if (cmd === "summarize stack" || cmd === "sum stack") {
       out(["    Variable |   Obs", "-------------+--------"]);
       for (const g of stack) out(`${pad(g.label.slice(0, 12), 12)} | ${pad(g.count, 5)}`);
-    } else if (cmd.startsWith("reg")) out(regression());
+    } else if (/^(reg|regress)(\s|$)/.test(cmd)) out(regression());
     else if (cmd === "list projects" || cmd === "ls projects") {
       projects.forEach((p, i) =>
         lines.push({ kind: "out", text: `  ${i + 1}. ${p.title}`, href: p.href }),

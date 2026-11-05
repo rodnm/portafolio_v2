@@ -32,6 +32,11 @@ test.describe("Stata console", () => {
     await input.fill("xyzzy");
     await input.press("Enter");
     await expect(dialog.getByRole("log")).toContainText("unrecognized command");
+    // Only "reg"/"regress" run the regression; other words sharing the prefix do not.
+    await input.fill("register");
+    await input.press("Enter");
+    await expect(dialog.getByRole("log")).toContainText("unrecognized command: register");
+    await expect(dialog.getByRole("log")).not.toContainText("_cons");
     await page.keyboard.press("Control+k");
     await expect(dialog).toBeHidden();
   });

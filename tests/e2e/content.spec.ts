@@ -27,6 +27,9 @@ for (const home of homes) {
       await expect(page.locator("#opening img")).toHaveAttribute("alt", "Rodrigo Norabuena");
       await expect(page.locator('#opening a[href^="mailto:"]')).toBeVisible();
       await expect(page.locator('#opening a[href$=".pdf"]')).toBeVisible();
+      await expect(page.locator("#opening dl")).toContainText(
+        home.lang === "es" ? "Lima · Perú" : "Lima · Peru",
+      );
     });
 
     test("about publishes the full text in four paragraphs", async ({ page }) => {

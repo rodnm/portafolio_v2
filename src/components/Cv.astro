@@ -49,7 +49,7 @@ const pdf = `${import.meta.env.BASE_URL}cv/rodrigo-norabuena-cv-${lang}.pdf`;
     <h1 class="text-3xl font-semibold tracking-tight">{site.name}</h1>
     <p class="mt-1 font-mono text-cap tracking-widest uppercase">{profile.kicker[lang]}</p>
     <p class="mt-2 text-ink-dim">
-      {site.city.replace(" · ", ", ")} · <a href={`mailto:${site.email}`}>{site.email}</a> ·
+      {site.city[lang].replace(" · ", ", ")} · <a href={`mailto:${site.email}`}>{site.email}</a> ·
       linkedin.com/in/rodnm · github.com/rodnm
     </p>
   </header>
@@ -194,6 +194,7 @@ const pdf = `${import.meta.env.BASE_URL}cv/rodrigo-norabuena-cv-${lang}.pdf`;
         <li>
           <strong>{e.data.result[lang]}</strong> — {e.data.title[lang]} ({e.data.date.slice(0, 4)}).{" "}
           {e.data.summary[lang]}
+          {e.data.note && <span class="text-ink-dim"> {e.data.note[lang]}</span>}
         </li>
       ))}
     </ul>

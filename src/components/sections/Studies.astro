@@ -60,7 +60,15 @@ const progress = (start?: string, end?: string) => {
                     {Math.round(p * 100)} %
                   </Cap>
                 </div>
-                <div class="h-1.5 bg-hair">
+                <div
+                  class="h-1.5 bg-hair"
+                  role="progressbar"
+                  aria-label={`${t.studies.progress}: ${s.data.title[lang]}`}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow={Math.round(p * 100)}
+                  data-progress-track
+                >
                   <div
                     class="h-full origin-left bg-accent"
                     style={`scale: ${p.toFixed(3)} 1`}
@@ -89,5 +97,9 @@ const progress = (start?: string, end?: string) => {
     const p = Math.min(1, Math.max(0, (n - s) / (e - s)));
     el.querySelector("[data-progress-bar]").style.scale = `${p} 1`;
     el.querySelector("[data-progress-label]").textContent = `${Math.round(p * 100)} %`;
+    el.querySelector("[data-progress-track]").setAttribute(
+      "aria-valuenow",
+      String(Math.round(p * 100)),
+    );
   });
 </script>

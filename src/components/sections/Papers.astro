@@ -26,9 +26,17 @@ const published = papers.filter((p) => !p.data.classified);
 
     <p class="mb-10 font-mono text-lead">
       {t.papers.count}
-      <span class="inline-block bg-ink px-2 text-canvas" aria-label={t.papers.classified}>
-        {published.length > 0 ? published.length : "█"}
-      </span>
+      {published.length > 0 ? (
+        <span class="inline-block bg-ink px-2 text-canvas">{published.length}</span>
+      ) : (
+        <span
+          class="inline-block bg-ink px-2 text-canvas"
+          role="img"
+          aria-label={t.papers.classified}
+        >
+          █
+        </span>
+      )}
       <span class="text-ink-dim">{t.papers.later}</span>
     </p>
 

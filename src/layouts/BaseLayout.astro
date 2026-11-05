@@ -3,7 +3,7 @@ import { Font } from "astro:assets";
 import Footer from "../components/layout/Footer.astro";
 import Masthead from "../components/layout/Masthead.astro";
 import { toLocale } from "../i18n/locales";
-import { switchLocalePath } from "../i18n/routes";
+import { localePath, switchLocalePath } from "../i18n/routes";
 import { ui } from "../i18n/ui";
 import "../styles/global.css";
 
@@ -12,6 +12,8 @@ interface Props {
   description?: string;
   noindex?: boolean;
   type?: "website" | "article";
+  /** False for pages that exist in one language only (404, internal pages). */
+  translated?: boolean;
 }
 
 const lang = toLocale(Astro.currentLocale);
@@ -21,11 +23,17 @@ const {
   description = t.meta.description,
   noindex = false,
   type = "website",
+  translated = true,
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
 const site = Astro.site ?? new URL("https://rodnm.github.io");
 const canonical = new URL(Astro.url.pathname, site).href;
+const otherLang = lang === "es" ? "en" : "es";
+// Untranslated pages send the language switch to the other language's home page.
+const switchHref = translated
+  ? switchLocalePath(Astro.url.pathname, base, otherLang)
+  : localePath(otherLang, "", base);
 const esUrl = new URL(switchLocalePath(Astro.url.pathname, base, "es"), site).href;
 const enUrl = new URL(switchLocalePath(Astro.url.pathname, base, "en"), site).href;
 const ogImage = new URL(`${base}og/og-${lang}.png`, site).href;
@@ -36,7 +44,7 @@ const person = {
   alternateName: "Rodrigo Norabuena",
   jobTitle: lang === "es" ? "Economista | Analytics" : "Economist | Analytics",
   url: new URL(base, site).href,
-  email: "mailto:rodrigoandres.norabuena@gmail.com",
+  email: "rodrigoandres.norabuena@gmail.com",
   image: new URL(`${base}og/og-${lang}.png`, site).href,
   alumniOf: { "@type": "CollegeOrUniversity", name: "Pontificia Universidad Católica del Perú" },
   address: { "@type": "PostalAddress", addressLocality: "Lima", addressCountry: "PE" },
@@ -53,9 +61,13 @@ const person = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="es" href={esUrl} />
-    <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="x-default" href={esUrl} />
+    {translated && (
+      <>
+        <link rel="alternate" hreflang="es" href={esUrl} />
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="x-default" href={esUrl} />
+      </>
+    )}
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#f0ebde" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#14110d" media="(prefers-color-scheme: dark)" />
@@ -97,7 +109,7 @@ const person = {
     >
       {t.a11y.skip}
     </a>
-    <Masthead lang={lang} t={t} />
+    <Masthead lang={lang} t={t} switchHref={switchHref} />
     <main id="main" tabindex="-1" class="outline-none">
       <slot />
     </main>
