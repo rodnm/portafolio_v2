@@ -5,7 +5,7 @@ import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
 import { chromium } from "@playwright/test";
 
-const base = process.env.SHOTS_BASE ?? "http://localhost:4321/portafolio_v2/";
+const base = process.env.SHOTS_BASE ?? "http://localhost:4321/";
 const thresholds = { performance: 0.9, accessibility: 0.95, "best-practices": 0.95, seo: 0.95 };
 const limits = { "largest-contentful-paint": 2500, "cumulative-layout-shift": 0.1 };
 const out = new URL("../test-results/lighthouse/", import.meta.url);
