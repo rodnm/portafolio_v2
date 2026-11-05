@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const groups = (await getCollection("skills")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="stack" aria-labelledby="stack-title" class="border-b border-hair">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="stack-title"
+      chapter={t.stack.chapter}
+      title={t.stack.title}
+      kicker={t.stack.kicker}
+    />
+
+    <div class="overflow-hidden border border-rule bg-paper font-mono text-sm">
+      <p class="border-b border-hair px-4 py-3" aria-hidden="true">
+        <span class="text-ink-dim">.</span>
+        {t.stack.command}
+        <span class="ml-1 inline-block h-4 w-2 translate-y-0.5 bg-accent motion-safe:animate-blink"></span>
+      </p>
+      <table class="w-full border-collapse text-left">
+        <caption class="sr-only">{t.stack.title}</caption>
+        <thead>
+          <tr class="border-b border-rule">
+            <th scope="col" class="px-4 py-2 font-medium sm:w-64 sm:text-right">
+              {t.stack.variable}
+            </th>
+            <th scope="col" class="w-12 border-x border-hair px-3 py-2 text-right font-medium">
+              {t.stack.obs}
+            </th>
+            <th scope="col" class="px-4 py-2 font-medium max-sm:hidden">
+              {t.stack.values}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {groups.map((g) => {
+            const items = lang === "en" && g.data.items_en ? g.data.items_en : g.data.items;
+            return (
+              <tr class="border-b border-hair align-top last:border-b-0">
+                <th scope="row" class="px-4 py-3 font-normal sm:text-right">
+                  <span class="block font-display text-base font-medium">{g.data.label[lang]}</span>
+                  <span class="mt-2 block text-ink-dim sm:hidden">{items.join(" · ")}</span>
+                </th>
+                <td class="border-x border-hair px-3 py-3 text-right text-accent tabular-nums">
+                  {items.length}
+                </td>
+                <td class="px-4 py-3 leading-relaxed max-sm:hidden">
+                  {items.map((item, i) => (
+                    <>
+                      {i > 0 && <span class="text-ink-dim"> · </span>}
+                      <span>{item}</span>
+                    </>
+                  ))}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <Cap dim as="p" class="mt-3">
+      n = {groups.reduce((a, g) => a + g.data.items.length, 0)}
+    </Cap>
+  </div>
+</section>

@@ -1,0 +1,76 @@
+---
+import { ols, simulate } from "../../lib/regression";
+
+interface Props {
+  title: string;
+  equation: string;
+  class?: string;
+}
+
+const { title, equation, class: className } = Astro.props;
+
+const points = simulate({ n: 28, seed: 2019 });
+const fit = ols(points);
+
+// Plot area in SVG units.
+const W = 240;
+const H = 200;
+const pad = { l: 18, r: 8, t: 12, b: 22 };
+const xMin = 0;
+const xMax = 10;
+const yMin = 0;
+const yMax = 10;
+const sx = (x: number) => pad.l + ((x - xMin) / (xMax - xMin)) * (W - pad.l - pad.r);
+const sy = (y: number) => H - pad.b - ((y - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
+const f = (n: number) => n.toFixed(2);
+const yHat = (x: number) => fit.intercept + fit.slope * x;
+
+const xs = Array.from({ length: 21 }, (_, i) => xMin + (i / 20) * (xMax - xMin));
+const upper = xs.map((x) => `${f(sx(x))},${f(sy(yHat(x) + fit.bandHalfWidth(x)))}`);
+const lower = xs.map((x) => `${f(sx(x))},${f(sy(yHat(x) - fit.bandHalfWidth(x)))}`).reverse();
+const band = `M${upper.join(" L")} L${lower.join(" L")} Z`;
+const ticks = [0, 2, 4, 6, 8, 10];
+---
+
+<svg class:list={["w-full", className]} viewBox={`0 0 ${W} ${H}`} role="img">
+  <title>{title}</title>
+  <desc>
+    {`β̂₀ = ${fit.intercept.toFixed(2)}, β̂₁ = ${fit.slope.toFixed(2)} (EE ${fit.slopeSE.toFixed(2)}), R² = ${fit.r2.toFixed(2)}, n = ${points.length}`}
+  </desc>
+  <g class="text-hair" stroke="currentColor" stroke-width="0.5">
+    {ticks.map((t) => (
+      <line x1={f(sx(t))} x2={f(sx(t))} y1={pad.t} y2={H - pad.b} />
+    ))}
+    {ticks.map((t) => (
+      <line x1={pad.l} x2={W - pad.r} y1={f(sy(t))} y2={f(sy(t))} />
+    ))}
+  </g>
+  <g class="fill-ink-dim font-mono" font-size="7">
+    {ticks.map((t) => (
+      <text x={f(sx(t))} y={H - 8} text-anchor="middle">
+        {t}
+      </text>
+    ))}
+  </g>
+  <path d={band} class="reveal-fade fill-accent/15"></path>
+  <g class="fill-ink">
+    {points.map((p, i) => (
+      <circle class="reveal-pop" style={`--i: ${i}`} cx={f(sx(p.x))} cy={f(sy(p.y))} r="2.2" />
+    ))}
+  </g>
+  <line
+    class="reveal-draw stroke-accent"
+    x1={f(sx(xMin))}
+    y1={f(sy(yHat(xMin)))}
+    x2={f(sx(xMax))}
+    y2={f(sy(yHat(xMax)))}
+    stroke-width="1.6"
+    pathLength="1"
+  ></line>
+  <text x={pad.l + 4} y={pad.t + 8} class="fill-ink font-mono" font-size="7.5">
+    {equation}
+  </text>
+  <text x={pad.l + 4} y={pad.t + 18} class="fill-ink-dim font-mono" font-size="7">
+    {`β̂₁ = ${fit.slope.toFixed(2)} (${fit.slopeSE.toFixed(2)}) · R² = ${fit.r2.toFixed(2)}`}
+  </text>
+</svg>

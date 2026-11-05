@@ -28,8 +28,17 @@ for (const vp of viewports) {
       await page.evaluate(() => document.fonts.ready);
       const slug = p.replace(/[^a-z0-9]+/gi, "_").replace(/^_|_$/g, "") || "home";
       const file = new URL(`${slug}-${vp.name}-${theme}.png`, out);
-      await page.screenshot({ path: file.pathname, fullPage: process.env.SHOTS_FULL === "1" });
-      console.log(file.pathname);
+      const sections = (process.env.SHOTS_SECTIONS ?? "").split(",").filter(Boolean);
+      if (sections.length) {
+        for (const id of sections) {
+          const target = new URL(`${slug}-${id}-${vp.name}-${theme}.png`, out);
+          await page.locator(`#${id}`).screenshot({ path: target.pathname });
+          console.log(target.pathname);
+        }
+      } else {
+        await page.screenshot({ path: file.pathname, fullPage: process.env.SHOTS_FULL === "1" });
+        console.log(file.pathname);
+      }
     }
     await context.close();
   }

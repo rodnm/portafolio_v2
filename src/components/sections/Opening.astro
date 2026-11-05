@@ -1,0 +1,135 @@
+---
+import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
+import portrait from "../../assets/profile.png";
+import Brackets from "../hud/Brackets.astro";
+import Cap from "../hud/Cap.astro";
+import Globe from "../hud/Globe.astro";
+import HudStrip from "../hud/HudStrip.astro";
+import LinkButton from "../ui/LinkButton.astro";
+import { site } from "../../data/site";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const profile = (await getEntry("profile", "main"))!.data;
+const base = import.meta.env.BASE_URL;
+const cvHref = `${base}cv/rodrigo-norabuena-cv-${lang}.pdf`;
+
+// Editorial indentation of each headline line (by position), as in the original layout.
+const indent = ["", "pl-6 sm:pl-16", "pl-2 sm:pl-6", "pl-10 sm:pl-28"];
+const lineStyle = {
+  plain: "",
+  accent: "font-light italic text-accent",
+  italic: "font-normal italic",
+} as const;
+---
+
+<section id="opening" aria-labelledby="opening-title" class="border-b border-hair">
+  <div class="mx-auto grid max-w-page gap-10 px-4 pt-10 pb-12 sm:px-10 lg:grid-cols-[1.6fr_1fr] lg:pt-16">
+    <div class="flex flex-col gap-6">
+      <div class="flex flex-wrap justify-between gap-2">
+        <Cap dim>{t.hero.chapter}</Cap>
+        <Cap dim>{t.masthead.issue}</Cap>
+      </div>
+
+      <h1 id="opening-title" class="flex flex-col text-hero font-semibold lg:text-hero-split">
+        {profile.headline[lang].map((line, i) => (
+          <span class:list={["block", indent[i]]}>
+            {line.map((part, j) => (
+              <>
+                {j > 0 && " "}
+                <span class={lineStyle[part.style]}>{part.text}</span>
+              </>
+            ))}{" "}
+          </span>
+        ))}
+      </h1>
+
+      <p class="max-w-measure text-lead text-ink-dim">{profile.bio[lang]}</p>
+
+      <div class="flex flex-wrap gap-3">
+        <LinkButton href={`mailto:${site.email}`}>{t.hero.contact} →</LinkButton>
+        <LinkButton href={cvHref} variant="outline" download>
+          {t.hero.cv} · PDF
+        </LinkButton>
+        <LinkButton href={site.github} variant="outline" rel="me noopener" target="_blank">
+          GitHub ↗
+        </LinkButton>
+        <LinkButton href={site.linkedin} variant="outline" rel="me noopener" target="_blank">
+          LinkedIn ↗
+        </LinkButton>
+      </div>
+
+      <div class="mt-2 flex items-center gap-5 border-t border-hair pt-5">
+        <Image
+          src={portrait}
+          alt={site.shortName}
+          width={96}
+          height={96}
+          class="size-20 shrink-0 rounded-full bg-paper sm:size-24"
+          loading="eager"
+        />
+        <dl class="grid flex-1 grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
+          <div class="flex flex-col gap-1">
+            <Cap dim as="dt">
+              {t.hero.operator}
+            </Cap>
+            <dd class="text-sm">{site.shortName}</dd>
+          </div>
+          <div class="flex flex-col gap-1">
+            <Cap dim as="dt">
+              {t.hero.base}
+            </Cap>
+            <dd class="text-sm">{site.city}</dd>
+          </div>
+          <div class="flex flex-col gap-1">
+            <Cap dim as="dt">
+              {t.hero.role}
+            </Cap>
+            <dd class="text-sm">{profile.kicker[lang]}</dd>
+          </div>
+          <div class="flex flex-col gap-1">
+            <Cap dim as="dt">
+              {t.hero.edition}
+            </Cap>
+            <dd class="text-sm tabular-nums">2026 / V·II</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <aside class="flex justify-center lg:justify-end">
+      <figure class="flex w-full max-w-80 flex-col gap-3 sm:max-w-96">
+        <div class="relative grid aspect-square place-items-center bg-paper bg-graph">
+          <Globe class="w-3/4 text-ink" marker={site.coordinates} title={t.hero.globeTitle} />
+          <Brackets />
+        </div>
+        <figcaption class="flex flex-col gap-1">
+          <Cap dim>
+            {t.hero.figure} · <span class="tabular-nums">{site.coordinates.label}</span>
+          </Cap>
+          <span class="text-sm text-ink-dim">{t.hero.figureCaption}</span>
+        </figcaption>
+      </figure>
+    </aside>
+  </div>
+
+  <HudStrip t={t} />
+  <p class="flex items-center justify-between gap-4 border-b border-rule px-4 py-3 sm:px-10">
+    <Cap dim aria-hidden="true">
+      ★
+    </Cap>
+    <Cap dim class="text-center">
+      {t.hero.broadcast}
+    </Cap>
+    <Cap dim aria-hidden="true">
+      ★
+    </Cap>
+  </p>
+</section>

@@ -1,14 +1,15 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 // Monospace uppercase caption used for editorial metadata ("CAP. 01", "FIG. 01").
-interface Props {
+interface Props extends HTMLAttributes<"span"> {
   dim?: boolean;
   as?: "span" | "p" | "div" | "dt" | "dd" | "figcaption";
-  class?: string;
 }
 
-const { dim = false, as: Tag = "span", class: className } = Astro.props;
+const { dim = false, as: Tag = "span", class: className, ...rest } = Astro.props;
 ---
 
-<Tag class:list={["font-mono text-cap uppercase", dim && "text-ink-dim", className]}>
+<Tag class:list={["font-mono text-cap uppercase", dim && "text-ink-dim", className]} {...rest}>
   <slot />
 </Tag>

@@ -70,9 +70,13 @@
   --text-cap--line-height: 1.4;
   --text-cap--letter-spacing: 0.14em;
   /* Editorial display sizes. */
-  --text-hero: clamp(3.25rem, 12vw, 7.75rem);
+  --text-hero: clamp(3rem, 11vw, 6.5rem);
   --text-hero--line-height: 0.96;
   --text-hero--letter-spacing: -0.035em;
+  /* Same headline when it shares the row with the hero figure (lg and up). */
+  --text-hero-split: clamp(3rem, 6.4vw, 6.25rem);
+  --text-hero-split--line-height: 0.96;
+  --text-hero-split--letter-spacing: -0.035em;
   --text-section: clamp(2.5rem, 8vw, 4.75rem);
   --text-section--line-height: 1;
   --text-section--letter-spacing: -0.035em;
@@ -106,6 +110,58 @@
       opacity: 0;
     }
   }
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      scale: 0.3;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/*
+ * Scroll-linked reveals for figures. Without support for view timelines (or with
+ * reduced motion) the figure is simply shown in its final state.
+ * Points can stagger with an inline custom property: style="--i: 3".
+ */
+@utility reveal-draw {
+  stroke-dasharray: 1;
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 35% cover 55%;
+    }
+  }
+}
+@utility reveal-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: pop ease-out both;
+      animation-timeline: view();
+      animation-range: entry calc(5% + var(--i, 0) * 1%) cover calc(30% + var(--i, 0) * 0.5%);
+    }
+  }
+}
+@utility reveal-fade {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: fade linear both;
+      animation-timeline: view();
+      animation-range: entry 50% cover 60%;
+    }
+  }
 }
 
 /* Faint millimetre-paper grid used behind figures and plates. */
@@ -115,6 +171,25 @@
     linear-gradient(90deg, var(--rn-hair) 1px, transparent 1px);
   background-size: 1.5rem 1.5rem;
   background-position: -1px -1px;
+}
+
+/* Vertical running text for the editorial side rail. */
+@utility writing-vertical {
+  writing-mode: vertical-rl;
+}
+
+/* List items prefixed with an accent em dash. */
+@utility list-dash {
+  & > li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+  & > li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
 }
 
 /* Screen-reader-only text that becomes visible on focus (skip link). */
