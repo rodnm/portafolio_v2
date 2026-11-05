@@ -30,7 +30,12 @@ const lineStyle = {
 } as const;
 ---
 
-<section id="opening" aria-labelledby="opening-title" class="border-b border-hair">
+<section
+  id="opening"
+  aria-labelledby="opening-title"
+  data-hud-title={t.hero.chapter.split("— ")[1]}
+  class="border-b border-hair"
+>
   <div class="mx-auto grid max-w-page gap-10 px-4 pt-10 pb-12 sm:px-10 lg:grid-cols-[1.6fr_1fr] lg:pt-16">
     <div class="flex flex-col gap-6">
       <div class="flex flex-wrap justify-between gap-2">

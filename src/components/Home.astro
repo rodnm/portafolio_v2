@@ -9,8 +9,15 @@ import Experience from "./sections/Experience.astro";
 import Opening from "./sections/Opening.astro";
 import Projects from "./sections/Projects.astro";
 import Stack from "./sections/Stack.astro";
+import { getCollection } from "astro:content";
+import StataConsole from "./console/StataConsole.svelte";
+import ChapterHud from "./hud/ChapterHud.astro";
+import { site } from "../data/site";
 import type { Locale } from "../i18n/locales";
+import { localePath } from "../i18n/routes";
 import { ui } from "../i18n/ui";
+import { getProjects, projectSlug } from "../lib/projects";
+import { ols, simulate } from "../lib/regression";
 
 interface Props {
   lang: Locale;
@@ -18,6 +25,9 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = ui[lang];
+const skills = (await getCollection("skills")).sort((a, b) => a.data.order - b.data.order);
+const projects = await getProjects(lang);
+const fit = ols(simulate({ n: 28, seed: 2019 }));
 ---
 
 <Opening lang={lang} t={t} />
@@ -30,3 +40,23 @@ const t = ui[lang];
 <Events lang={lang} t={t} />
 <Stack lang={lang} t={t} />
 <Contact t={t} />
+<ChapterHud />
+<StataConsole
+  client:media="(min-width: 1024px)"
+  labels={t.console}
+  stack={skills.map((g) => ({ label: g.data.label[lang], count: g.data.items.length }))}
+  projects={projects.map((p) => ({
+    title: p.data.title,
+    href: localePath(lang, `projects/${projectSlug(p)}`),
+  }))}
+  email={site.email}
+  fit={{
+    intercept: fit.intercept,
+    slope: fit.slope,
+    interceptSE: fit.interceptSE,
+    slopeSE: fit.slopeSE,
+    r2: fit.r2,
+    n: fit.n,
+  }}
+  langHrefs={{ es: localePath("es"), en: localePath("en") }}
+/>

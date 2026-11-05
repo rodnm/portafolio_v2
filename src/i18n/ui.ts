@@ -202,6 +202,32 @@ export const ui = {
       download: "Descargar PDF",
       web: "Versión web completa",
     },
+    console: {
+      open: "Consola ⌘K",
+      title: "rn-stata · consola del portafolio",
+      prompt: "Comando",
+      placeholder: "Escribe help y presiona Enter",
+      close: "Cerrar consola",
+      welcome: "Bienvenido. Escribe help para ver los comandos.",
+      unknown: "comando no reconocido",
+      tryHelp: "Escribe help.",
+      help: [
+        "help rodrigo        quién soy",
+        "summarize stack     herramientas por área",
+        "reg exito esfuerzo  una regresión (datos simulados)",
+        "list projects       casos destacados",
+        "contact             cómo escribirme",
+        "theme dark|light    cambiar el tema",
+        "lang en|es          cambiar el idioma",
+        "clear · exit",
+      ],
+      bio: "Economista PUCP. Análisis cuantitativo aplicado: datos, econometría y machine learning para entender problemas económicos y sociales y apoyar decisiones.",
+      regNote: "Nota: datos simulados. La curiosidad no entró como control.",
+      contact: "Escríbeme a",
+      themeSet: "Tema cambiado a",
+      langGo: "Cambiando de idioma…",
+      classified: "acceso denegado: archivo clasificado",
+    },
     stack: {
       chapter: "CAP. 09",
       title: "Stack",
@@ -418,6 +444,32 @@ export const ui = {
       download: "Download PDF",
       web: "Full web version",
     },
+    console: {
+      open: "Console ⌘K",
+      title: "rn-stata · portfolio console",
+      prompt: "Command",
+      placeholder: "Type help and press Enter",
+      close: "Close console",
+      welcome: "Welcome. Type help to see the commands.",
+      unknown: "unrecognized command",
+      tryHelp: "Type help.",
+      help: [
+        "help rodrigo        who I am",
+        "summarize stack     tools by area",
+        "reg exito esfuerzo  a regression (simulated data)",
+        "list projects       featured cases",
+        "contact             how to reach me",
+        "theme dark|light    switch the theme",
+        "lang en|es          switch the language",
+        "clear · exit",
+      ],
+      bio: "PUCP economist. Applied quantitative analysis: data, econometrics and machine learning to understand economic and social problems and support decisions.",
+      regNote: "Note: simulated data. Curiosity was not included as a control.",
+      contact: "Write to me at",
+      themeSet: "Theme set to",
+      langGo: "Switching language…",
+      classified: "access denied: classified file",
+    },
     stack: {
       chapter: "CH. 09",
       title: "Stack",
@@ -434,7 +486,11 @@ export const ui = {
   },
 } as const;
 
-type Widen<T> = { readonly [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
+type Widen<T> = T extends string
+  ? string
+  : T extends readonly (infer U)[]
+    ? readonly Widen<U>[]
+    : { readonly [K in keyof T]: Widen<T[K]> };
 
 /** Shape of one language's strings; both languages must satisfy it. */
 export type UI = Widen<(typeof ui)["es"]>;
