@@ -38,6 +38,7 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
 - **S23** «en "Modelo de riesgo crediticio sin fuga de datos", que informe lleve a este link "https://github-html-preview.dohyeon5626.com/?https://github.com/rodnm/credit-risk-project/blob/HEAD/reports/credit_risk_report.html&[token cifrado omitido]&1793858247927"». El token se omite aquí a propósito (ver L22).
 - **S24** «al pasar por encima de cada proyecto en "Archivo" me gustaria que su seccion pudiera ser resaltada para marcar enfasis que esta siendo apuntada por el mouse y que el cuadro de los botones se ilumine de blanco para hacer enfasis de que quiero que seleccione esos botones para interactuar con el proyecto. en general esa funcionalidad me gustaria tener en todos los proyectos del portafolio»
 - **S25** «en realidad deberia existir una seccion de posts, publicaciones, o algo asi donde pueda escribir sobre los trabajos que hice y analizarlos o algo asi»
+- **S26** «el Stack nutrelo con lo que puedes entencer de las certificaciones. por ejemplo: aws, rag, etc»
 
 ## Tasks
 
@@ -61,6 +62,7 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
 | T10 Enlaces: video de huella minera e informe de riesgo crediticio | S22, S23 | inline | hecho | `9e08de0`; unit ROJO (2 fallos: `reel.mp4` y el informe directo) → VERDE 7/7; guarda contra tokens en links |
 | T11 Resaltado al pasar el mouse en filas de proyectos y archivo | S24 | inline | hecho | `21ceb90`; e2e ROJO (la fila no cambiaba de fondo) → VERDE; suite 116 e2e, 28 unit |
 | T12 Sección de publicaciones | S25 | — | pendiente: decisión del usuario | — |
+| T13 Stack respaldado por las certificaciones | S26 | inline | hecho | unit `skills.test.ts` ROJO (elemento partido, faltaban AWS/RAG) → VERDE; 116 e2e; CV ES/EN regenerado en 2 páginas |
 
 ## Log
 
@@ -101,3 +103,9 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
   - **T10:** los tests unitarios fallaron con los links anteriores y pasaron con los nuevos.
   - **T11:** el e2e nuevo falló porque la fila no cambiaba de fondo y pasó con `emphasis.ts`. La suite quedó en `format:check`, `check`, 28 unit, `build`, `scan:privacy` y 116 e2e.
   - **Variantes de hover:** primero creí que la regla `group-hover/row:` ganaba al `hover:` propio del botón, pero mi `grep` había coincidido con los atributos `class` del HTML. El test en el navegador mostró que las variantes simples funcionan, así que se mantuvieron. Contraste del texto sobre el botón encendido (`canvas` sobre `ink`): 14.7 en tema claro y 15.8 en oscuro. Sobre `accent`: 5.2 y 8.0.
+- **L24** (2026-11-05) S26. Solo entra al Stack lo que respalda `src/data/credentials.yaml`:
+  - **Cloud:** AWS y Azure (`dsrp-data-eng`: «AWS Data Engineer · 21 h», «Azure Data Engineer · 80 h»).
+  - **IA:** RAG y Deep Learning (`dsrp-ai`: «LLM y RAG · 32 h», «Deep Learning · 32 h»), transformers y evaluación de LLMs (`qlab-ws-2025`, `qlab-ws-2026`).
+  - **Métodos:** inferencia causal y evaluación de impacto (`proimpacto`, 20/20) y Debiased ML (`qlab-ws-2026`).
+  - **Herramientas:** MATLAB (`coursera-matlab`), ArcGIS (`pucp-arcgis`), Power Pivot y Google Sheets con Apps Script (`escuela-global`).
+  - **Bug previo:** `skills.yaml` usaba listas YAML en línea, y las comas dentro de paréntesis partían elementos. El sitio mostraba «Power BI (DAX · Power Query)» y «Moran's I · LISA)» con conteos inflados. Ahora cada elemento va entre comillas y un test exige paréntesis balanceados.
