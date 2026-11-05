@@ -17,7 +17,8 @@
     "format:check": "./scripts/node.sh prettier --check .",
     "scan:privacy": "./scripts/node.sh scripts/scan-privacy.mjs",
     "cv:pdf": "./scripts/node.sh scripts/make-cv-pdf.mjs",
-    "og": "./scripts/node.sh scripts/make-og.mjs"
+    "og": "./scripts/node.sh scripts/make-og.mjs",
+    "lighthouse": "./scripts/node.sh scripts/lighthouse.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -33,6 +34,8 @@
     "@astrojs/check": "^0.9.12",
     "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "1.63.0",
+    "chrome-launcher": "^1.2.2",
+    "lighthouse": "^13.6.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "prettier-plugin-svelte": "^4.1.1",
