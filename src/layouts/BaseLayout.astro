@@ -1,25 +1,73 @@
 ---
-import "../styles/global.css";
+import { Font } from "astro:assets";
+import Footer from "../components/layout/Footer.astro";
+import Masthead from "../components/layout/Masthead.astro";
 import { toLocale } from "../i18n/locales";
+import { switchLocalePath } from "../i18n/routes";
+import { ui } from "../i18n/ui";
+import "../styles/global.css";
 
 interface Props {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
 const lang = toLocale(Astro.currentLocale);
+const t = ui[lang];
+const { title = t.meta.title, description = t.meta.description, noindex = false } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const site = Astro.site ?? new URL("https://rodnm.github.io");
+const canonical = new URL(Astro.url.pathname, site).href;
+const esUrl = new URL(switchLocalePath(Astro.url.pathname, base, "es"), site).href;
+const enUrl = new URL(switchLocalePath(Astro.url.pathname, base, "en"), site).href;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} id="top">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={esUrl} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#f0ebde" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14110d" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-ibm-plex-mono" />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        root.classList.add("js");
+        let theme;
+        try {
+          theme = localStorage.getItem("rn-theme");
+        } catch {}
+        if (theme !== "light" && theme !== "dark") {
+          theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        root.dataset.theme = theme;
+      })();
+    </script>
   </head>
-  <body>
-    <slot />
+  <body class="bg-canvas text-ink antialiased">
+    <a
+      href="#main"
+      class="focus-reveal fixed top-3 left-3 z-50 bg-ink px-4 py-3 font-mono text-cap text-canvas uppercase"
+    >
+      {t.a11y.skip}
+    </a>
+    <Masthead lang={lang} t={t} />
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+    <Footer t={t} />
   </body>
 </html>

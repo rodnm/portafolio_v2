@@ -31,7 +31,7 @@ esac
 TMP="${TMPDIR:-/tmp}"
 # Vite probes these WSL markers with existsSync, which throws under the permission model.
 read_paths=("$ROOT" "$TMP" /proc/sys/fs/binfmt_misc/WSLInterop /run/WSL)
-write_paths=("$TMP" "$ROOT/.astro" "$ROOT/node_modules/.astro" "$ROOT/node_modules/.vite" "$ROOT/node_modules/.vitest" "$ROOT/node_modules/.vite-temp")
+write_paths=("$TMP" "$ROOT/.astro" "$ROOT/node_modules/.astro" "$ROOT/node_modules/.vite" "$ROOT/node_modules/.vitest" "$ROOT/node_modules/.vitest-cache" "$ROOT/node_modules/.vite-temp")
 
 case "$tool" in
   astro) write_paths+=("$ROOT/dist" "$ROOT/src/assets/generated") ;;
@@ -40,7 +40,10 @@ case "$tool" in
     [ -n "${PLAYWRIGHT_BROWSERS_PATH:-}" ] && read_paths+=("$PLAYWRIGHT_BROWSERS_PATH")
     ;;
   prettier) write_paths+=("$ROOT") ;;
-  scripts/*) write_paths+=("$ROOT/src/assets/generated" "$ROOT/public/generated") ;;
+  scripts/*)
+    write_paths+=("$ROOT/src/assets/generated" "$ROOT/public/generated" "$ROOT/test-results")
+    [ -n "${PLAYWRIGHT_BROWSERS_PATH:-}" ] && read_paths+=("$PLAYWRIGHT_BROWSERS_PATH")
+    ;;
 esac
 
 for extra in ${EXTRA_READ:-}; do read_paths+=("$extra"); done

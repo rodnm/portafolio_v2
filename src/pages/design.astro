@@ -1,0 +1,111 @@
+---
+import Brackets from "../components/hud/Brackets.astro";
+import Cap from "../components/hud/Cap.astro";
+import Globe from "../components/hud/Globe.astro";
+import HudStrip from "../components/hud/HudStrip.astro";
+import SectionHead from "../components/hud/SectionHead.astro";
+import LinkButton from "../components/ui/LinkButton.astro";
+import { site } from "../data/site";
+import { ui } from "../i18n/ui";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Internal reference page: every token and primitive of the design system.
+const t = ui.es;
+const colors = [
+  "canvas",
+  "canvas-2",
+  "paper",
+  "ink",
+  "ink-dim",
+  "rule",
+  "hair",
+  "accent",
+  "accent-2",
+  "signal",
+  "amber",
+] as const;
+const swatch: Record<(typeof colors)[number], string> = {
+  canvas: "bg-canvas",
+  "canvas-2": "bg-canvas-2",
+  paper: "bg-paper",
+  ink: "bg-ink",
+  "ink-dim": "bg-ink-dim",
+  rule: "bg-rule",
+  hair: "bg-hair",
+  accent: "bg-accent",
+  "accent-2": "bg-accent-2",
+  signal: "bg-signal",
+  amber: "bg-amber",
+};
+---
+
+<BaseLayout
+  title="Sistema de diseño · RN"
+  description="Referencia interna de tokens y componentes."
+  noindex
+>
+  <div class="mx-auto max-w-page px-4 py-16 sm:px-10">
+    <SectionHead chapter="DS. 00" title="Sistema de diseño" kicker="Editorial + HUD" />
+
+    <section class="mb-16" aria-labelledby="ds-color">
+      <Cap dim as="p" class="mb-4">
+        <span id="ds-color">Color</span>
+      </Cap>
+      <ul class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+        {colors.map((name) => (
+          <li class="border border-hair">
+            <div class:list={["h-16", swatch[name]]} />
+            <Cap class="block p-2">{name}</Cap>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="mb-16 space-y-6" aria-labelledby="ds-type">
+      <Cap dim as="p">
+        <span id="ds-type">Tipografía</span>
+      </Cap>
+      <p class="text-hero font-semibold">
+        Datos <em class="font-light text-accent">en</em> decisiones.
+      </p>
+      <p class="text-section font-medium">Título de sección</p>
+      <p class="text-display font-medium">Título de tarjeta</p>
+      <p class="max-w-measure text-lead">
+        Texto de entrada: economista enfocado en análisis cuantitativo aplicado.
+      </p>
+      <p class="max-w-measure text-ink-dim">Texto corrido con color atenuado para lectura larga.</p>
+      <p class="text-figure font-semibold text-accent tabular-nums">3 días → 5 min</p>
+      <Cap>Cap · metadatos monoespaciados</Cap>
+    </section>
+
+    <section class="mb-16 grid gap-8 md:grid-cols-2" aria-labelledby="ds-figure">
+      <div>
+        <Cap dim as="p" class="mb-4">
+          <span id="ds-figure">Figura</span>
+        </Cap>
+        <figure class="flex flex-col gap-3">
+          <div class="relative grid aspect-square max-w-80 place-items-center bg-paper bg-graph">
+            <Globe class="w-3/4 text-ink" marker={site.coordinates} title="Globo wireframe" />
+            <Brackets />
+          </div>
+          <figcaption class="flex flex-col gap-1">
+            <Cap dim>FIG. 01</Cap>
+            <span class="text-sm text-ink-dim">Esfera de cobertura — proyección ortográfica.</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="space-y-4">
+        <Cap dim as="p">
+          Acciones
+        </Cap>
+        <div class="flex flex-wrap gap-3">
+          <LinkButton href="#">Contactar</LinkButton>
+          <LinkButton href="#" variant="outline">
+            Descargar CV
+          </LinkButton>
+        </div>
+      </div>
+    </section>
+  </div>
+  <HudStrip t={t} />
+</BaseLayout>

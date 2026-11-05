@@ -1,0 +1,109 @@
+---
+import type { Locale } from "../../i18n/locales";
+import { localePath } from "../../i18n/routes";
+import type { UI } from "../../i18n/ui";
+import LangSwitch from "./LangSwitch.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const home = localePath(lang);
+const links = [
+  { id: "about", label: t.nav.about },
+  { id: "experience", label: t.nav.experience },
+  { id: "projects", label: t.nav.projects },
+  { id: "credentials", label: t.nav.credentials },
+  { id: "papers", label: t.nav.papers },
+  { id: "contact", label: t.nav.contact },
+];
+---
+
+<header class="sticky top-0 z-40 border-b-2 border-ink bg-canvas/95 backdrop-blur-sm">
+  <div class="mx-auto grid max-w-page grid-cols-[auto_1fr] items-center gap-x-4 px-4 py-2 sm:px-10 xl:py-4">
+    <a
+      href={home}
+      class="text-lg font-bold tracking-wider whitespace-nowrap sm:text-xl xl:text-2xl"
+    >
+      RN
+      <span class="mx-1.5 text-accent" aria-hidden="true">
+        ·
+      </span>
+      NORABUENA
+    </a>
+
+    <div class="flex items-center justify-end gap-1 xl:gap-4">
+      <nav
+        id="site-nav"
+        aria-label={t.a11y.mainNav}
+        data-site-nav
+        class="max-xl:absolute max-xl:inset-x-0 max-xl:top-full max-xl:border-b-2 max-xl:border-ink max-xl:bg-canvas max-xl:px-4 max-xl:py-4 max-xl:js:hidden max-xl:data-open:block"
+      >
+        <ul class="flex gap-x-5 gap-y-1 max-xl:flex-col">
+          {links.map((link) => (
+            <li>
+              <a
+                href={`${home}#${link.id}`}
+                class="inline-flex min-h-11 items-center font-mono text-cap whitespace-nowrap uppercase transition-colors hover:text-accent xl:min-h-0"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <LangSwitch lang={lang} t={t} />
+      <ThemeToggle t={t} />
+      <button
+        type="button"
+        data-menu-button
+        aria-controls="site-nav"
+        aria-expanded="false"
+        aria-label={t.a11y.menu}
+        data-label-open={t.a11y.menu}
+        data-label-close={t.a11y.closeMenu}
+        class="inline-flex size-11 items-center justify-center text-ink no-js:hidden xl:hidden"
+      >
+        <svg
+          class="size-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          aria-hidden="true"
+        >
+          <path d="M4 7h16M4 12h16M4 17h10"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector("[data-menu-button]");
+    const nav = document.querySelector("[data-site-nav]");
+    if (!button || !nav) return;
+    const setOpen = (open) => {
+      nav.toggleAttribute("data-open", open);
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute(
+        "aria-label",
+        open ? button.dataset.labelClose : button.dataset.labelOpen,
+      );
+    };
+    button.addEventListener("click", () => setOpen(!nav.hasAttribute("data-open")));
+    nav.addEventListener("click", (event) => {
+      if (event.target.closest("a")) setOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && nav.hasAttribute("data-open")) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+  })();
+</script>

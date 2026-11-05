@@ -1,0 +1,41 @@
+---
+import type { Locale } from "../../i18n/locales";
+import { switchLocalePath } from "../../i18n/routes";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const other: Locale = lang === "es" ? "en" : "es";
+const href = switchLocalePath(Astro.url.pathname, import.meta.env.BASE_URL, other);
+---
+
+<a
+  href={href}
+  hreflang={other}
+  lang={other}
+  data-lang-switch
+  class="group inline-flex min-h-11 items-center gap-1 px-2 font-mono text-cap uppercase"
+  title={t.lang.switchTo}
+>
+  <span class="text-ink">{t.lang.current}</span>
+  <span class="text-ink-dim">/</span>
+  <span class="text-ink-dim transition-colors group-hover:text-accent">{t.lang.short}</span>
+  <span class="sr-only">— {t.lang.switchTo}</span>
+</a>
+
+<script is:inline>
+  // Keep the reader's place: carry the section currently in view to the other language.
+  document.querySelectorAll("[data-lang-switch]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const sections = [...document.querySelectorAll("section[id]")];
+      const current = sections
+        .filter((s) => s.getBoundingClientRect().top <= window.innerHeight * 0.3)
+        .pop();
+      if (current) link.href = link.href.split("#")[0] + "#" + current.id;
+    });
+  });
+</script>

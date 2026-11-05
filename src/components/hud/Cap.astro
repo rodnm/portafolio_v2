@@ -1,0 +1,14 @@
+---
+// Monospace uppercase caption used for editorial metadata ("CAP. 01", "FIG. 01").
+interface Props {
+  dim?: boolean;
+  as?: "span" | "p" | "div" | "dt" | "dd" | "figcaption";
+  class?: string;
+}
+
+const { dim = false, as: Tag = "span", class: className } = Astro.props;
+---
+
+<Tag class:list={["font-mono text-cap uppercase", dim && "text-ink-dim", className]}>
+  <slot />
+</Tag>

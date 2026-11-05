@@ -1,0 +1,26 @@
+---
+import Cap from "./Cap.astro";
+
+interface Props {
+  chapter: string;
+  title: string;
+  kicker?: string;
+  id?: string;
+}
+
+const { chapter, title, kicker, id } = Astro.props;
+---
+
+<header class="mb-10 grid grid-cols-[auto_1fr] items-end gap-x-5 gap-y-2 border-b border-hair pb-4 md:grid-cols-[7rem_1fr_auto]">
+  <Cap dim class="col-span-2 md:col-span-1">
+    {chapter}
+  </Cap>
+  <h2 id={id} class="col-span-2 text-section font-medium md:col-span-1">
+    {title}
+  </h2>
+  {kicker && (
+    <Cap dim class="col-span-2 md:col-span-1 md:text-right">
+      {kicker}
+    </Cap>
+  )}
+</header>
