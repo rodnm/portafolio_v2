@@ -2,7 +2,7 @@
 // Usage: scripts/node.sh scripts/shots.mjs <path> [<path> ...]  (needs `astro preview` running on :4321)
 import { chromium } from "@playwright/test";
 
-const base = process.env.SHOTS_BASE ?? "http://localhost:4321/portafolio_v2/";
+const base = process.env.SHOTS_BASE ?? "http://localhost:4321/";
 const out = new URL("../test-results/shots/", import.meta.url);
 const paths = process.argv.slice(2);
 const viewports = [

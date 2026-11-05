@@ -3,11 +3,10 @@ import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 
-// The site is first published as a GitHub Pages project site (/portafolio_v2/)
-// and later moved to the user site root. Both values come from the environment
-// so the move is a configuration change, not a code change.
+// The site is the GitHub Pages user site, served from the domain root. Both values
+// come from the environment so it can still be built under a subpath (BASE_PATH).
 const site = process.env.SITE_URL ?? "https://rodnm.github.io";
-const base = process.env.BASE_PATH ?? "/portafolio_v2/";
+const base = process.env.BASE_PATH ?? "/";
 
 export default defineConfig({
   site,

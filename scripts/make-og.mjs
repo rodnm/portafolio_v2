@@ -3,7 +3,7 @@
 import { mkdir } from "node:fs/promises";
 import { chromium } from "@playwright/test";
 
-const base = process.env.SHOTS_BASE ?? "http://localhost:4321/portafolio_v2/";
+const base = process.env.SHOTS_BASE ?? "http://localhost:4321/";
 const out = new URL("../public/og/", import.meta.url);
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch();
