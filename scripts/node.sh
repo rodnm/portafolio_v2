@@ -63,6 +63,8 @@ flags=("$mode" --allow-child-process --allow-worker --allow-addons --allow-net)
 for p in "${read_paths[@]}"; do flags+=("--allow-fs-read=$p"); done
 # A trailing slash marks the grant as a directory, so it survives the tool deleting and recreating it.
 for p in "${write_paths[@]}"; do flags+=("--allow-fs-write=${p%/}/"); done
+# On GitHub Actions, Vitest's reporter appends the job summary to this file (a file grant: no slash).
+if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then flags+=("--allow-fs-write=$GITHUB_STEP_SUMMARY"); fi
 
 export ASTRO_TELEMETRY_DISABLED=1
 # Keep tool preference files inside the project so they stay within the allowlist.
