@@ -1,0 +1,92 @@
+---
+import { getEntry } from "astro:content";
+import RegressionFigure from "../figures/RegressionFigure.astro";
+import Brackets from "../hud/Brackets.astro";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const profile = (await getEntry("profile", "main"))!.data;
+const centrum = (await getEntry("experience", "centrum"))!.data;
+const [lead = "", ...rest] = profile.about[lang];
+---
+
+<section id="about" aria-labelledby="about-title" class="border-b border-hair">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="about-title"
+      chapter={t.about.chapter}
+      title={t.about.title}
+      kicker={t.about.kicker}
+    />
+
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_1fr_0.9fr]">
+      <p class="text-lead">
+        <span
+          class="float-left -mt-1 mr-3 text-8xl leading-none font-bold text-accent"
+          aria-hidden="true"
+        >
+          {lead.charAt(0)}
+        </span>
+        <span class="sr-only">{lead.charAt(0)}</span>
+        {lead.slice(1)}
+      </p>
+
+      <div class="flex flex-col gap-4 leading-relaxed">
+        {rest.map((paragraph) => (
+          <p>{paragraph}</p>
+        ))}
+      </div>
+
+      <aside class="flex flex-col gap-6">
+        <figure class="flex flex-col gap-3">
+          <div class="relative bg-paper bg-graph p-3">
+            <RegressionFigure title={t.about.figureTitle} equation={t.about.equation} />
+            <Brackets />
+          </div>
+          <figcaption class="flex flex-col gap-1">
+            <Cap dim>{t.about.figure}</Cap>
+            <span class="text-sm text-ink-dim">{t.about.figureCaption}</span>
+          </figcaption>
+        </figure>
+
+        <dl class="flex flex-col border-t border-hair">
+          {centrum.metric && (
+            <div class="flex items-baseline justify-between gap-4 border-b border-dashed border-hair py-2">
+              <Cap dim as="dt">
+                {t.about.etl}
+              </Cap>
+              <dd class="text-xl font-semibold text-accent tabular-nums">
+                {centrum.metric.value[lang]}
+              </dd>
+            </div>
+          )}
+          <div class="flex items-baseline justify-between gap-4 border-b border-dashed border-hair py-2">
+            <Cap dim as="dt">
+              {t.about.languages}
+            </Cap>
+            <dd class="text-xl font-semibold text-accent">{t.about.languagesValue}</dd>
+          </div>
+        </dl>
+
+        <div class="flex flex-col gap-2">
+          <Cap dim as="p">
+            {t.about.interests}
+          </Cap>
+          <ul class="flex flex-wrap gap-2">
+            {profile.interests[lang].map((item) => (
+              <li class="border border-hair px-2 py-1 text-sm">{item}</li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

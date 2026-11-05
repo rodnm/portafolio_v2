@@ -1,0 +1,123 @@
+---
+import { getCollection } from "astro:content";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const papers = await getCollection("papers");
+const published = papers.filter((p) => !p.data.classified);
+---
+
+<section id="papers" aria-labelledby="papers-title" class="border-b border-hair">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="papers-title"
+      chapter={t.papers.chapter}
+      title={t.papers.title}
+      kicker={t.papers.kicker}
+    />
+
+    <p class="mb-10 font-mono text-lead">
+      {t.papers.count}
+      {published.length > 0 ? (
+        <span class="inline-block bg-ink px-2 text-canvas">{published.length}</span>
+      ) : (
+        <span
+          class="inline-block bg-ink px-2 text-canvas"
+          role="img"
+          aria-label={t.papers.classified}
+        >
+          █
+        </span>
+      )}
+      <span class="text-ink-dim">{t.papers.later}</span>
+    </p>
+
+    <ul class="grid gap-6 lg:grid-cols-2">
+      {papers.map((paper) => (
+        <li class="relative overflow-hidden border border-rule bg-paper p-6 sm:p-8">
+          {paper.data.classified && (
+            <span
+              class="absolute top-6 right-4 rotate-12 border-2 border-accent px-3 py-1 font-mono text-sm font-medium tracking-widest text-accent uppercase sm:right-8"
+              aria-hidden="true"
+            >
+              {t.papers.classified}
+            </span>
+          )}
+          <dl class="flex flex-col gap-5">
+            <div class="flex flex-col gap-2">
+              <Cap dim as="dt">
+                {t.papers.titleLabel}
+              </Cap>
+              <dd>
+                {paper.data.classified ? (
+                  <span class="flex flex-col gap-2" role="img" aria-label={t.papers.titleHidden}>
+                    <span class="h-5 w-11/12 bg-ink" />
+                    <span class="h-5 w-3/5 bg-ink" />
+                  </span>
+                ) : (
+                  <span class="text-display font-medium">{paper.data.title?.[lang]}</span>
+                )}
+              </dd>
+            </div>
+            <div class="flex flex-col gap-1">
+              <Cap dim as="dt">
+                {t.papers.topic}
+              </Cap>
+              <dd class="font-mono">{paper.data.topic[lang]}</dd>
+            </div>
+            <div class="flex flex-col gap-3">
+              <Cap dim as="dt">
+                {t.papers.pipeline}
+              </Cap>
+              <dd>
+                <ol class="flex flex-wrap items-center gap-2">
+                  {paper.data.stages.map((stage, i) => (
+                    <li class="flex items-center gap-2">
+                      {i > 0 && (
+                        <span class="text-ink-dim" aria-hidden="true">
+                          →
+                        </span>
+                      )}
+                      <span class="border border-hair px-2 py-1 font-mono text-cap uppercase">
+                        {t.papers.stages[stage]}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </dd>
+            </div>
+            <div class="flex flex-col gap-1">
+              <Cap dim as="dt">
+                {t.papers.stage}
+              </Cap>
+              <dd class="font-mono">
+                <span aria-hidden="true">██████████</span>{" "}
+                <span class="text-ink-dim">({t.papers.stageHidden})</span>
+              </dd>
+            </div>
+            <div class="flex flex-col gap-2">
+              <Cap dim as="dt">
+                {t.papers.formats}
+              </Cap>
+              <dd class="flex flex-wrap gap-2">
+                {["PDF", "BibTeX", "DOI"].map((f) => (
+                  <span class="border border-dashed border-hair px-2 py-1 font-mono text-cap text-ink-dim uppercase">
+                    {f}
+                  </span>
+                ))}
+              </dd>
+            </div>
+          </dl>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

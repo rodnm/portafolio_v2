@@ -1,0 +1,105 @@
+---
+import { getCollection } from "astro:content";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const studies = await getCollection("studies");
+const monthIndex = (ym: string) => {
+  const [y, m] = ym.split("-").map(Number);
+  return y! * 12 + (m! - 1);
+};
+// Share of the program already elapsed, from the build date; refreshed in the browser below.
+const progress = (start?: string, end?: string) => {
+  if (!start || !end) return undefined;
+  const now = new Date();
+  const s = monthIndex(start);
+  const e = monthIndex(end) + 1;
+  const n = now.getFullYear() * 12 + now.getMonth() + now.getDate() / 31;
+  return Math.min(1, Math.max(0, (n - s) / (e - s)));
+};
+---
+
+<section id="studies" aria-labelledby="studies-title" class="border-b border-hair bg-canvas-2">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="studies-title"
+      chapter={t.studies.chapter}
+      title={t.studies.title}
+      kicker={t.studies.kicker}
+    />
+    <ul class="grid gap-6 md:grid-cols-2">
+      {studies.map((s) => {
+        const p = progress(s.data.start, s.data.end);
+        return (
+          <li class="relative flex flex-col gap-4 border border-rule bg-paper p-6">
+            <span
+              class="absolute top-6 right-6 size-3 rounded-full bg-accent motion-safe:animate-blip"
+              aria-hidden="true"
+            />
+            <Cap dim>{s.data.period[lang]}</Cap>
+            <h3 class="pr-8 text-display font-medium">{s.data.title[lang]}</h3>
+            <Cap>{s.data.org}</Cap>
+            {p !== undefined && (
+              <div
+                class="flex flex-col gap-2"
+                data-progress
+                data-start={s.data.start}
+                data-end={s.data.end}
+              >
+                <div class="flex justify-between">
+                  <Cap dim>{t.studies.progress}</Cap>
+                  <Cap class="tabular-nums" data-progress-label>
+                    {Math.round(p * 100)} %
+                  </Cap>
+                </div>
+                <div
+                  class="h-1.5 bg-hair"
+                  role="progressbar"
+                  aria-label={`${t.studies.progress}: ${s.data.title[lang]}`}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow={Math.round(p * 100)}
+                  data-progress-track
+                >
+                  <div
+                    class="h-full origin-left bg-accent"
+                    style={`scale: ${p.toFixed(3)} 1`}
+                    data-progress-bar
+                  />
+                </div>
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<script is:inline>
+  document.querySelectorAll("[data-progress]").forEach((el) => {
+    const idx = (ym) => {
+      const [y, m] = ym.split("-").map(Number);
+      return y * 12 + (m - 1);
+    };
+    const now = new Date();
+    const n = now.getFullYear() * 12 + now.getMonth() + now.getDate() / 31;
+    const s = idx(el.dataset.start);
+    const e = idx(el.dataset.end) + 1;
+    const p = Math.min(1, Math.max(0, (n - s) / (e - s)));
+    el.querySelector("[data-progress-bar]").style.scale = `${p} 1`;
+    el.querySelector("[data-progress-label]").textContent = `${Math.round(p * 100)} %`;
+    el.querySelector("[data-progress-track]").setAttribute(
+      "aria-valuenow",
+      String(Math.round(p * 100)),
+    );
+  });
+</script>

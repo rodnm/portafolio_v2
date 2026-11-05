@@ -1,0 +1,93 @@
+---
+import { getCollection } from "astro:content";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+import { formatPeriod, startYear } from "../../lib/format";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const entries = (await getCollection("experience")).sort((a, b) =>
+  b.data.start.localeCompare(a.data.start),
+);
+const groups = [
+  { kind: "work" as const, label: null },
+  { kind: "volunteer" as const, label: t.experience.volunteer },
+];
+---
+
+<section id="experience" aria-labelledby="experience-title" class="border-b border-hair">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="experience-title"
+      chapter={t.experience.chapter}
+      title={t.experience.title}
+      kicker={t.experience.kicker}
+    />
+
+    {groups.map((group) => {
+      const items = entries.filter((e) => e.data.kind === group.kind);
+      return (
+        <div class="mb-12 last:mb-0">
+          {group.label && <h3 class="mb-4 text-display font-medium">{group.label}</h3>}
+          <ol class="border-b border-hair">
+            {items.map((entry, i) => {
+              const d = entry.data;
+              return (
+                <li class="grid gap-x-8 gap-y-4 border-t border-hair py-8 md:grid-cols-[11rem_1fr_3rem]">
+                  <div class="flex flex-col gap-2">
+                    <span class="text-4xl leading-none font-semibold text-accent tabular-nums">
+                      {startYear(d.start)} —
+                    </span>
+                    <Cap dim>{formatPeriod(d.start, d.end, lang)}</Cap>
+                  </div>
+                  <div class="flex flex-col gap-3">
+                    <h4 class="text-2xl font-medium tracking-tight">{d.role[lang]}</h4>
+                    <p>
+                      <Cap>{d.org}</Cap> <Cap dim>· {d.location}</Cap>
+                    </p>
+                    {d.summary && (
+                      <p class="max-w-3xl leading-relaxed text-ink-dim">{d.summary[lang]}</p>
+                    )}
+                    {d.metric && (
+                      <p class="flex flex-wrap items-baseline gap-x-3 border-l-2 border-accent py-1 pl-4">
+                        <span class="text-figure font-semibold text-accent tabular-nums">
+                          {d.metric.value[lang]}
+                        </span>
+                        <Cap dim>{d.metric.label[lang]}</Cap>
+                      </p>
+                    )}
+                    <ul class="list-dash flex max-w-3xl flex-col gap-2">
+                      {d.highlights.map((h) => (
+                        <li class="leading-relaxed">{h[lang]}</li>
+                      ))}
+                    </ul>
+                    {d.stack.length > 0 && (
+                      <ul class="flex flex-wrap gap-x-3 gap-y-1">
+                        {d.stack.map((s) => (
+                          <li>
+                            <Cap dim>{s}</Cap>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <div class="writing-vertical flex justify-end border-l border-hair pl-3 max-md:hidden">
+                    <Cap dim>
+                      {t.experience.number} {String(i + 1).padStart(2, "0")}
+                    </Cap>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      );
+    })}
+  </div>
+</section>

@@ -1,0 +1,106 @@
+# Conocimientos (fuente: CV). Cada grupo es una "variable" de la tabla summarize.
+- id: quant
+  order: 1
+  label:
+    es: Análisis cuantitativo
+    en: Quantitative analysis
+  items:
+    [
+      Econometría aplicada,
+      Machine Learning,
+      scikit-learn,
+      XGBoost,
+      SHAP,
+      Series de tiempo,
+      Análisis espacial (Moran's I,
+      LISA),
+    ]
+  items_en:
+    [
+      Applied econometrics,
+      Machine learning,
+      scikit-learn,
+      XGBoost,
+      SHAP,
+      Time series,
+      Spatial analysis (Moran's I,
+      LISA),
+    ]
+- id: languages
+  order: 2
+  label:
+    es: Lenguajes y bases de datos
+    en: Languages & databases
+  items: [Python, pandas, NumPy, SQLAlchemy, GeoPandas, SQL Server, PostgreSQL / PostGIS, R, Stata]
+- id: engineering
+  order: 3
+  label:
+    es: Ingeniería de datos
+    en: Data engineering
+  items:
+    [
+      ETL / ELT,
+      Arquitectura Medallion,
+      Modelado dimensional,
+      Parquet,
+      Apache Airflow,
+      Apache Spark,
+      Docker,
+      FastAPI,
+      Pytest,
+      Git,
+      GitHub Actions,
+    ]
+  items_en:
+    [
+      ETL / ELT,
+      Medallion architecture,
+      Dimensional modeling,
+      Parquet,
+      Apache Airflow,
+      Apache Spark,
+      Docker,
+      FastAPI,
+      Pytest,
+      Git,
+      GitHub Actions,
+    ]
+- id: viz
+  order: 4
+  label:
+    es: Visualización
+    en: Visualization
+  items: [Power BI (DAX, Power Query), Streamlit, Plotly, Excel avanzado (VBA, Power Query)]
+  items_en: [Power BI (DAX, Power Query), Streamlit, Plotly, Advanced Excel (VBA, Power Query)]
+- id: cloud
+  order: 5
+  label:
+    es: Cloud
+    en: Cloud
+  items: [Google Cloud Storage, Compute Engine, BigQuery]
+- id: ai
+  order: 6
+  label:
+    es: IA
+    en: AI
+  items: [Desarrollo asistido por IA (Claude Code, OpenCode), APIs de LLMs, LangChain]
+  items_en: [AI-assisted development (Claude Code, OpenCode), LLM APIs, LangChain]
+- id: lang
+  order: 7
+  label:
+    es: Idiomas
+    en: Languages
+  items:
+    [
+      Español (nativo),
+      Inglés avanzado — C1 comprensión,
+      B2–C1 producción (certificación B2,
+      Idiomas Católica),
+    ]
+  items_en:
+    [
+      Spanish (native),
+      Advanced English — C1 comprehension,
+      B2–C1 production (B2 certificate,
+      Idiomas Católica),
+    ]

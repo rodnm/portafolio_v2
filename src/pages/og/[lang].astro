@@ -1,0 +1,56 @@
+---
+import { Font } from "astro:assets";
+import type { GetStaticPaths } from "astro";
+import Cap from "../../components/hud/Cap.astro";
+import Globe from "../../components/hud/Globe.astro";
+import { site } from "../../data/site";
+import type { Locale } from "../../i18n/locales";
+import { ui } from "../../i18n/ui";
+import "../../styles/global.css";
+
+// 1200×630 social card, captured to public/og/ by scripts/make-og.mjs. Not linked or indexed.
+export const getStaticPaths = (() => [
+  { params: { lang: "es" } },
+  { params: { lang: "en" } },
+]) satisfies GetStaticPaths;
+
+const lang = Astro.params.lang as Locale;
+const t = ui[lang];
+const lines =
+  lang === "es"
+    ? ["Un", "economista", "que convierte", "datos en", "decisiones."]
+    : ["An", "economist", "turning", "raw data into", "decisions."];
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>OG · {lang}</title>
+    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-ibm-plex-mono" />
+  </head>
+  <body class="m-0 bg-canvas text-ink">
+    <div class="relative grid h-[630px] w-[1200px] grid-cols-[1fr_22rem] gap-10 overflow-hidden bg-graph p-16">
+      <div class="flex flex-col justify-between">
+        <Cap dim>RN · NORABUENA — {t.masthead.issue}</Cap>
+        <p class="text-7xl leading-none font-semibold tracking-tight">
+          <span>{lines[0]} </span>
+          <span class="font-light text-accent italic">{lines[1]}</span>
+          <span class="block">{lines[2]}</span>
+          <span class="block">{lines[3]}</span>
+          <span class="block italic">{lines[4]}</span>
+        </p>
+        <div class="flex gap-6">
+          <Cap>{site.shortName}</Cap>
+          <Cap dim>{ui[lang].about.languagesValue}</Cap>
+          <Cap dim>{site.coordinates.label}</Cap>
+        </div>
+      </div>
+      <div class="grid place-items-center">
+        <Globe class="w-80 text-ink" marker={site.coordinates} title="" />
+      </div>
+    </div>
+  </body>
+</html>

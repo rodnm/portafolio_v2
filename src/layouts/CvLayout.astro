@@ -1,0 +1,47 @@
+---
+import { Font } from "astro:assets";
+import { toLocale } from "../i18n/locales";
+import { switchLocalePath } from "../i18n/routes";
+import { ui } from "../i18n/ui";
+import "../styles/global.css";
+
+// Minimal, print-first layout for the CV: no navigation, light theme, A4 pages.
+const lang = toLocale(Astro.currentLocale);
+const t = ui[lang];
+const base = import.meta.env.BASE_URL;
+const site = Astro.site ?? new URL("https://rodnm.github.io");
+const esUrl = new URL(switchLocalePath(Astro.url.pathname, base, "es"), site).href;
+const enUrl = new URL(switchLocalePath(Astro.url.pathname, base, "en"), site).href;
+---
+
+<!doctype html>
+<html lang={lang} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.cv.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, site).href} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <Font cssVariable="--font-space-grotesk" preload />
+    <Font cssVariable="--font-ibm-plex-mono" />
+    <style is:global>
+      @page {
+        size: A4;
+        margin: 12mm 14mm 14mm;
+      }
+      @media print {
+        html {
+          background: white;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-canvas-2 py-8 text-ink print:bg-transparent print:py-0">
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

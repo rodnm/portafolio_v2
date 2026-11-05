@@ -1,0 +1,64 @@
+# Textos de presentación. "about" es el texto del usuario (ES) y su traducción (EN).
+- id: main
+  kicker:
+    es: Economista | Analytics
+    en: Economist | Analytics
+  headline:
+    es:
+      - [{ text: "Un", style: plain }, { text: "economista", style: accent }]
+      - [{ text: "que convierte", style: plain }]
+      - [{ text: "datos en", style: plain }]
+      - [{ text: "decisiones.", style: italic }]
+    en:
+      - [{ text: "An", style: plain }, { text: "economist", style: accent }]
+      - [{ text: "turning", style: plain }]
+      - [{ text: "raw data into", style: plain }]
+      - [{ text: "decisions.", style: italic }]
+  bio:
+    es: Economista de la PUCP con formación en ciencia de datos. Planteo bien la pregunta, elijo el método y llevo el análisis a productos que otros usan a diario.
+    en: PUCP economist trained in data science. I frame the question, choose the method and turn the analysis into products people use every day.
+  about:
+    es:
+      - >-
+        Soy Rodrigo Andrés Norabuena Mascaraqui, economista de la Pontificia Universidad Católica del Perú, y me interesa desarrollar una carrera en análisis cuantitativo aplicado: utilizar datos y métodos estadísticos y econométricos para entender problemas económicos y sociales, generar evidencia y apoyar decisiones.
+      - >-
+        En mi experiencia profesional he trabajado en el diseño de bases de datos, automatización de procesos y desarrollo de dashboards para transformar información institucional en indicadores útiles para la gestión de la investigación. Diseñé una arquitectura de bases de datos relacionales, implementé un pipeline ETL en Python que redujo un proceso de actualización de 3 días a 5 minutos y desarrollé herramientas de visualización para la dirección de investigación.
+      - >-
+        Estas experiencias me han permitido desarrollar una base técnica sólida en Python, SQL, R, Stata, Power BI y machine learning, pero también han reforzado algo que considero central en mi desarrollo profesional: no me interesa solamente preparar o procesar información, sino entender la pregunta que queremos responder, elegir un método adecuado, analizar los resultados y comunicar conclusiones que sean útiles.
+      - >-
+        Actualmente continúo fortaleciendo estas capacidades mediante proyectos independientes y formación en ciencia de datos, econometría e inferencia causal. Me interesa especialmente explorar oportunidades en investigación aplicada, consultoría económica, evaluación de impacto, política pública, regulación, riesgos y analítica, siempre desde una perspectiva cuantitativa.
+    en:
+      - >-
+        I'm Rodrigo Andrés Norabuena Mascaraqui, an economist from the Pontificia Universidad Católica del Perú, and I want to build a career in applied quantitative analysis: using data and statistical and econometric methods to understand economic and social problems, generate evidence and support decisions.
+      - >-
+        In my professional experience I have designed databases, automated processes and built dashboards that turn institutional information into useful indicators for research management. I designed a relational database architecture, implemented a Python ETL pipeline that cut a refresh process from 3 days to 5 minutes, and built visualization tools for the research leadership.
+      - >-
+        These experiences gave me a solid technical base in Python, SQL, R, Stata, Power BI and machine learning, and they reinforced something I consider central to my work: I'm not only interested in preparing or processing information, but in understanding the question we want to answer, choosing a suitable method, analyzing the results and communicating conclusions that are useful.
+      - >-
+        I keep strengthening these skills through independent projects and training in data science, econometrics and causal inference. I'm especially interested in applied research, economic consulting, impact evaluation, public policy, regulation, risk and analytics — always from a quantitative perspective.
+  interests:
+    es:
+      [
+        Investigación aplicada,
+        Consultoría económica,
+        Evaluación de impacto,
+        Política pública,
+        Regulación,
+        Riesgos,
+        Analítica,
+      ]
+    en:
+      [
+        Applied research,
+        Economic consulting,
+        Impact evaluation,
+        Public policy,
+        Regulation,
+        Risk,
+        Analytics,
+      ]
+  cvProfile:
+    es: >-
+      Economista de la PUCP con formación en ciencia de datos y experiencia desarrollando soluciones analíticas de punta a punta. Mi formación me da el criterio para plantear bien la pregunta y leer los resultados con sentido de negocio. La práctica me dio las herramientas para integrar datos, construir modelos y llevar el análisis a productos que otros usan a diario. Lo que más valoro es cerrar el ciclo: pasar del problema a una recomendación clara.
+    en: >-
+      PUCP economist trained in data science, with experience building end-to-end analytical solutions. My training gives me the judgment to frame the question well and read results with business sense. Practice gave me the tools to integrate data, build models and turn the analysis into products people use every day. What I value most is closing the loop: going from the problem to a clear recommendation.

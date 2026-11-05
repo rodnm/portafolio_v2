@@ -1,0 +1,89 @@
+---
+import { Image } from "astro:assets";
+import Brackets from "../hud/Brackets.astro";
+import Cap from "../hud/Cap.astro";
+import LinkChips from "./LinkChips.astro";
+import type { Locale } from "../../i18n/locales";
+import { localePath } from "../../i18n/routes";
+import type { UI } from "../../i18n/ui";
+import { type Project, projectCode, projectSlug } from "../../lib/projects";
+
+interface Props {
+  project: Project;
+  lang: Locale;
+  t: UI;
+  lead?: boolean;
+}
+
+const { project, lang, t, lead = false } = Astro.props;
+const d = project.data;
+const href = localePath(lang, `projects/${projectSlug(project)}`);
+---
+
+<article
+  class:list={[
+    "grid gap-6 border-t border-hair py-8",
+    lead
+      ? "lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-10"
+      : "md:grid-cols-[minmax(0,16rem)_1fr] lg:grid-cols-1",
+  ]}
+>
+  <a
+    href={href}
+    class="group relative block self-start bg-paper p-3"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <Image
+      src={d.cover}
+      alt=""
+      widths={lead ? [416, 832] : [256, 512]}
+      sizes={lead ? "(min-width: 1024px) 26rem, 100vw" : "(min-width: 768px) 16rem, 100vw"}
+      class="aspect-4/3 w-full object-contain transition-transform duration-500 group-hover:scale-102"
+    />
+    <Brackets />
+  </a>
+
+  <div class="flex flex-col gap-3">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <Cap dim>
+        {projectCode(d.order)} · {d.year} · {d.context}
+      </Cap>
+      <a href={href} class="font-mono text-cap text-accent uppercase hover:underline">
+        {t.projects.readCase}
+      </a>
+    </div>
+    <h3 class:list={["font-medium tracking-tight", lead ? "text-section" : "text-display"]}>
+      <a href={href} class="hover:text-accent">
+        {d.title}
+      </a>
+    </h3>
+    <p class="max-w-3xl leading-relaxed">
+      <Cap dim>{t.projects.question}</Cap>
+      <span class="block">{d.question}</span>
+    </p>
+    <p class="flex flex-wrap items-baseline gap-x-3 border-l-2 border-accent py-1 pl-4">
+      <span class="sr-only">{t.projects.result}:</span>
+      <span class="text-figure font-semibold text-accent tabular-nums">{d.result.value}</span>
+      <span class="text-ink-dim">{d.result.label}</span>
+    </p>
+    {lead && d.metrics.length > 0 && (
+      <dl class="grid gap-x-6 gap-y-3 border-y border-hair py-3 sm:grid-cols-3">
+        {d.metrics.map((m) => (
+          <div class="flex flex-col gap-1">
+            <dt class="order-2 text-sm text-ink-dim">{m.label}</dt>
+            <dd class="order-1 font-mono text-lg tabular-nums">{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+    <ul class="flex flex-wrap gap-x-3 gap-y-1">
+      {d.stack.map((s) => (
+        <li>
+          <Cap dim>{s}</Cap>
+        </li>
+      ))}
+    </ul>
+    <LinkChips links={d.links} t={t} />
+  </div>
+</article>

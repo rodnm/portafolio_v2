@@ -1,0 +1,101 @@
+---
+// Wireframe globe drawn at build time (orthographic view from the equator).
+// An optional marker is projected from latitude/longitude onto the sphere.
+interface Props {
+  meridians?: number;
+  parallels?: number;
+  centerLon?: number;
+  marker?: { lat: number; lon: number };
+  title: string;
+  class?: string;
+}
+
+const {
+  meridians = 11,
+  parallels = 8,
+  centerLon = -65,
+  marker,
+  title,
+  class: className,
+} = Astro.props;
+
+const size = 200;
+const c = size / 2;
+const r = c - 2;
+const rad = (deg: number) => (deg * Math.PI) / 180;
+
+const meridianRx = Array.from(
+  { length: meridians },
+  (_, i) => r * Math.sin(Math.PI * ((i + 1) / (meridians + 1))),
+);
+const parallelRows = Array.from({ length: parallels }, (_, i) => {
+  const k = (i + 1) / (parallels + 1);
+  const y = c - r + 2 * r * k;
+  return { y, rx: r * Math.cos(Math.asin((y - c) / r)), ry: r * Math.sin(Math.PI * k) * 0.18 };
+});
+
+const point = marker
+  ? {
+      x: c + r * Math.cos(rad(marker.lat)) * Math.sin(rad(marker.lon - centerLon)),
+      y: c - r * Math.sin(rad(marker.lat)),
+    }
+  : undefined;
+const fmt = (n: number) => n.toFixed(2);
+---
+
+<svg class:list={["overflow-visible", className]} viewBox={`0 0 ${size} ${size}`} role="img">
+  <title>{title}</title>
+  <g fill="none" stroke="currentColor" stroke-width="0.6" vector-effect="non-scaling-stroke">
+    <circle cx={c} cy={c} r={r}></circle>
+    {meridianRx.map((rx) => (
+      <ellipse cx={c} cy={c} rx={fmt(rx)} ry={r} />
+    ))}
+    {parallelRows.map((p) => (
+      <ellipse cx={c} cy={fmt(p.y)} rx={fmt(p.rx)} ry={fmt(p.ry)} />
+    ))}
+  </g>
+  <g
+    class="origin-center motion-safe:animate-spin-slow"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0.5"
+    stroke-dasharray="2 6"
+  >
+    <ellipse
+      cx={c}
+      cy={c}
+      rx={r + 14}
+      ry={r * 0.32 + 6}
+      transform={`rotate(-18 ${c} ${c})`}
+    ></ellipse>
+  </g>
+  {point && (
+    <g class="text-accent">
+      <circle
+        cx={fmt(point.x)}
+        cy={fmt(point.y)}
+        r="9"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="0.6"
+      />
+      <line
+        x1={fmt(point.x - 16)}
+        y1={fmt(point.y)}
+        x2={fmt(point.x - 11)}
+        y2={fmt(point.y)}
+        stroke="currentColor"
+        stroke-width="0.6"
+      />
+      <line
+        x1={fmt(point.x + 11)}
+        y1={fmt(point.y)}
+        x2={fmt(point.x + 16)}
+        y2={fmt(point.y)}
+        stroke="currentColor"
+        stroke-width="0.6"
+      />
+      <circle cx={fmt(point.x)} cy={fmt(point.y)} r="3" fill="currentColor" />
+    </g>
+  )}
+</svg>

@@ -1,0 +1,53 @@
+---
+import Brackets from "../hud/Brackets.astro";
+import Cap from "../hud/Cap.astro";
+
+// Click-to-load YouTube embed: no third-party request until the visitor asks for it.
+interface Props {
+  id: string;
+  title: string;
+  play: string;
+  note: string;
+}
+
+const { id, title, play, note } = Astro.props;
+---
+
+<figure class="flex flex-col gap-3">
+  <div class="relative aspect-video bg-ink text-canvas" data-video={id} data-title={title}>
+    <a
+      href={`https://www.youtube.com/watch?v=${id}`}
+      data-video-play
+      class="group absolute inset-0 grid place-items-center bg-graph"
+      aria-label={`${play}: ${title}`}
+    >
+      <span class="grid size-20 place-items-center rounded-full border border-canvas transition-colors group-hover:border-accent group-hover:text-accent">
+        <svg class="ml-1 size-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M7 4.5v15l12-7.5z"></path>
+        </svg>
+      </span>
+      <Cap class="absolute bottom-4 left-4">{title}</Cap>
+    </a>
+    <Brackets class="text-canvas" />
+  </div>
+  <figcaption>
+    <Cap dim>{note}</Cap>
+  </figcaption>
+</figure>
+
+<script is:inline>
+  document.querySelectorAll("[data-video-play]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const box = link.closest("[data-video]");
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.video}?autoplay=1`;
+      iframe.title = box.dataset.title;
+      iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+      iframe.allowFullscreen = true;
+      iframe.className = "absolute inset-0 size-full";
+      box.replaceChildren(iframe);
+      iframe.focus();
+    });
+  });
+</script>

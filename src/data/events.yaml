@@ -1,0 +1,92 @@
+# Datatones, hackatones y otros logros. "result" describe el resultado tal como se reconoció.
+- id: qiskit-2026
+  kind: hackathon
+  title:
+    es: IBM Quantum · Qiskit Fall Fest 2026
+    en: IBM Quantum · Qiskit Fall Fest 2026
+  organizer: IEEE Computer Society PUCP · IBM Quantum
+  date: 2026-10
+  result:
+    es: Participante · certificado oficial de IBM
+    en: Participant · official IBM certificate
+  summary:
+    es: Semanas de formación en computación cuántica y un hackatón por equipos. Nuestro proyecto, AeroQ Optimizer, plantea la asignación de puertas de embarque como un problema cuadrático de asignación y compara el óptimo clásico con QAOA.
+    en: Weeks of quantum computing training and a team hackathon. Our project, AeroQ Optimizer, frames airport gate assignment as a quadratic assignment problem and compares the classical optimum with QAOA.
+  latest: true
+  link: https://github.com/rodnm/hackathon-qiskit-fall-fest-2026
+  thumb: ../assets/generated/credentials/qiskit-2026.webp
+- id: oefa-2025
+  kind: datathon
+  title:
+    es: Datatón OEFA Innova 2025
+    en: OEFA Innova 2025 Datathon
+  organizer: OEFA · Ministerio del Ambiente
+  date: 2025-10
+  result:
+    es: Finalista
+    en: Finalist
+  finalist: true
+  summary:
+    es: En equipo, desarrollamos un modelo de machine learning con variables ambientales y epidemiológicas para la detección preventiva de brotes de dengue.
+    en: As a team, we built a machine learning model with environmental and epidemiological variables for the early detection of dengue outbreaks.
+  note:
+    es: La constancia oficial es de participación e igual para todos los equipos; solo los ganadores recibieron un certificado especial.
+    en: The official certificate is a participation certificate, the same for every team; only the winners received a special one.
+  thumb: ../assets/generated/credentials/oefa-2025.webp
+- id: sunass-2025
+  kind: datathon
+  title:
+    es: I Datatón SUNASS 2025
+    en: 1st SUNASS Datathon 2025
+  organizer: SUNASS · UPC
+  date: 2025-04
+  result:
+    es: Participante · 21 horas
+    en: Participant · 21 hours
+  summary:
+    es: Análisis de datos para mejorar los servicios de agua potable y saneamiento.
+    en: Data analysis to improve drinking water and sanitation services.
+  thumb: ../assets/generated/credentials/sunass-2025.webp
+- id: pcm-2024
+  kind: datathon
+  title:
+    es: Datatón «Exprésate Perú con Datos» 2024
+    en: '"Exprésate Perú con Datos" Datathon 2024'
+  organizer: Presidencia del Consejo de Ministros · Gobierno y Transformación Digital
+  date: 2024-10
+  result:
+    es: Participante
+    en: Participant
+  summary:
+    es: Análisis de los beneficiarios del Fondo MIVIVIENDA con enfoque en brechas de género, con datos abiertos.
+    en: Analysis of Fondo MIVIVIENDA housing-program beneficiaries with a gender-gap lens, using open data.
+  thumb: ../assets/generated/credentials/pcm-2024.webp
+- id: innovation-2020
+  kind: challenge
+  title:
+    es: Innovation Challenge 2020
+    en: Innovation Challenge 2020
+  organizer: PUCP · Facultad de Gestión y Alta Dirección · Equipu
+  date: 2020-08
+  result:
+    es: Participante
+    en: Participant
+  summary:
+    es: Propuesta de solución para el reto de una organización aliada.
+    en: Solution proposal for a partner organization's challenge.
+  thumb: ../assets/generated/credentials/innovation-2020.webp
+- id: kungfu
+  kind: sport
+  title:
+    es: Selección Universitaria de Kung Fu Wushu PUCP
+    en: PUCP Kung Fu Wushu University Team
+  organizer: PUCP · Servicios Deportivos
+  date: 2021-09
+  start: 2019-01
+  result:
+    es: Medallista · 2019–2021
+    en: Medalist · 2019–2021
+  summary:
+    es: Competencias universitarias con la selección de la PUCP. Las medallas no vienen con diploma; la universidad entregó certificados de reconocimiento.
+    en: University competitions with the PUCP team. The medals come without a diploma; the university issued recognition certificates.
+  thumb: ../assets/generated/credentials/pucp-kungfu.webp

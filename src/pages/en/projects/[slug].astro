@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from "astro";
+import ProjectDetail from "../../../components/projects/ProjectDetail.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getProjects, projectSlug } from "../../../lib/projects";
+
+export const getStaticPaths = (async () => {
+  const projects = await getProjects("en");
+  return projects.map((project, i) => ({
+    params: { slug: projectSlug(project) },
+    props: { project, next: projects[(i + 1) % projects.length]! },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project, next } = Astro.props;
+---
+
+<BaseLayout title={`${project.data.title} · Rodrigo Norabuena`} description={project.data.question}>
+  <ProjectDetail project={project} next={next} lang="en" />
+</BaseLayout>

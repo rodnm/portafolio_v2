@@ -1,0 +1,46 @@
+---
+import Cap from "../hud/Cap.astro";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  t: UI;
+}
+
+const { t } = Astro.props;
+const year = new Date().getFullYear();
+const roman = (n: number) =>
+  [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ].reduce<[string, number]>(
+    ([out, rest], [value, numeral]) => {
+      const times = Math.floor(rest / (value as number));
+      return [out + (numeral as string).repeat(times), rest - times * (value as number)];
+    },
+    ["", n],
+  )[0];
+---
+
+<footer class="mx-auto max-w-page px-4 pt-6 pb-10 sm:px-10">
+  <div class="flex flex-col gap-3 border-t border-rule pt-5 sm:flex-row sm:justify-between">
+    <Cap dim>© Rodrigo Norabuena · {roman(year)}</Cap>
+    <Cap dim>{t.footer.colophon}</Cap>
+    <a
+      href="#top"
+      class="font-mono text-cap text-ink-dim uppercase transition-colors hover:text-accent"
+    >
+      {t.footer.back}
+    </a>
+  </div>
+</footer>

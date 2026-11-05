@@ -1,0 +1,71 @@
+---
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import { site } from "../../data/site";
+import type { UI } from "../../i18n/ui";
+
+interface Props {
+  t: UI;
+}
+
+const { t } = Astro.props;
+const rows = [
+  { label: t.contact.email, href: `mailto:${site.email}`, text: site.email },
+  { label: "LinkedIn", href: site.linkedin, text: "linkedin.com/in/rodnm" },
+  { label: "GitHub", href: site.github, text: "github.com/rodnm" },
+];
+const orbits = Array.from({ length: 9 }, (_, i) => (i + 1) / 9);
+---
+
+<section id="contact" aria-labelledby="contact-title">
+  <div class="mx-auto max-w-page px-4 pt-20 pb-8 sm:px-10">
+    <SectionHead
+      id="contact-title"
+      chapter={t.contact.chapter}
+      title={t.contact.title}
+      kicker={t.contact.kicker}
+    />
+
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
+      <div class="flex flex-col gap-6">
+        <p class="max-w-xl text-lead">{t.contact.pitch}</p>
+        <a
+          href={`mailto:${site.email}`}
+          class="inline-flex items-baseline gap-3 self-start border-b border-ink pb-1 text-section font-medium transition-colors hover:text-accent"
+        >
+          {t.contact.cta}{" "}
+          <span class="text-accent" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </div>
+      <ul class="flex flex-col">
+        {rows.map((row) => (
+          <li class="grid grid-cols-[6rem_1fr] items-baseline border-b border-hair py-3">
+            <Cap dim>{row.label}</Cap>
+            <a href={row.href} class="break-all transition-colors hover:text-accent" rel="me">
+              {row.text}
+            </a>
+          </li>
+        ))}
+        <li class="grid grid-cols-[6rem_1fr] items-baseline border-b border-hair py-3">
+          <Cap dim>{t.contact.site}</Cap>
+          <span>rodnm.github.io</span>
+        </li>
+      </ul>
+    </div>
+
+    <svg
+      class="mt-16 h-32 w-full text-accent opacity-50"
+      viewBox="0 0 900 140"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <g fill="none" stroke="currentColor" stroke-width="0.8" vector-effect="non-scaling-stroke">
+        {orbits.map((k) => (
+          <ellipse cx="450" cy="140" rx={(450 * k).toFixed(1)} ry={(140 * k).toFixed(1)} />
+        ))}
+      </g>
+    </svg>
+  </div>
+</section>

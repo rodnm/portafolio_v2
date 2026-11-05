@@ -1,0 +1,23 @@
+---
+// Corner brackets that frame a figure; scales with its positioned parent.
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={["pointer-events-none absolute inset-0 size-full text-ink-dim", className]}
+  viewBox="0 0 100 100"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+>
+  <path
+    d="M0 8V0h8M92 0h8v8M100 92v8h-8M8 100H0v-8"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1"
+    vector-effect="non-scaling-stroke"
+  ></path>
+</svg>

@@ -1,0 +1,64 @@
+# Experiencia profesional y voluntariado (fuente: CV). Textos en ES y EN.
+- id: centrum
+  kind: work
+  role:
+    es: Practicante Profesional de Investigación
+    en: Research Analyst Intern
+  org: CENTRUM PUCP
+  location: Lima · PE
+  start: 2025-03
+  end: null
+  summary:
+    es: Conduje la evolución del ecosistema de datos de investigación de la escuela, desde los reportes manuales hasta un sistema de inteligencia analítica hoy en uso interno. Trabajé de la mano con la jefatura de gestión de la investigación, que aportaba el contexto del negocio; el diseño y desarrollo de la solución de datos estuvieron a mi cargo.
+    en: I led the evolution of the school's research data ecosystem, from manual reports to an analytics intelligence system now in internal use. I worked closely with the head of research management, who brought the business context; the design and development of the data solution were my responsibility.
+  metric:
+    value:
+      es: 3 días → 5 min
+      en: 3 days → 5 min
+    label:
+      es: ciclo de actualización de datos
+      en: data refresh cycle
+  highlights:
+    - es: Automaticé en Python un proceso manual de macros y hojas de cálculo que alimentaba SQL Server y los tableros de Power BI de la dirección, y reduje el ciclo de actualización de 3 días a 5 minutos.
+      en: Automated in Python a manual macro-and-spreadsheet process that fed SQL Server and the leadership's Power BI dashboards, cutting the refresh cycle from 3 days to 5 minutes.
+    - es: Rediseñé ese sistema por completo a partir del plan estratégico de investigación y de las preguntas de gestión de la dirección. Las traduje en un sistema de indicadores de productividad, calidad, impacto, colaboración y acreditación (AACSB, EQUIS), que incluye un score compuesto de evaluación docente y un modelo de alerta de inactividad de investigadores.
+      en: Redesigned that system from the ground up around the research strategic plan and leadership's management questions, translating them into indicators of productivity, quality, impact, collaboration and accreditation (AACSB, EQUIS), including a composite faculty evaluation score and a researcher-inactivity alert model.
+    - es: Construí un pipeline ETL con arquitectura Medallion (Python, pandas, Parquet) que integra Scopus, Web of Science, JCR, SJR y las APIs de ROR y OpenAlex, con matching difuso de instituciones, validaciones de calidad, pruebas unitarias (Pytest) y carga a un modelo dimensional en SQL Server.
+      en: Built a Medallion-architecture ETL pipeline (Python, pandas, Parquet) integrating Scopus, Web of Science, JCR, SJR and the ROR and OpenAlex APIs, with fuzzy institution matching, data-quality checks, unit tests (Pytest) and loading into a dimensional model on SQL Server.
+    - es: Incorporé al pipeline la clasificación de publicaciones según criterios AACSB, EQUIS y 7 variables de metodología de investigación, mediante APIs de modelos de lenguaje en procesamiento por lotes y en modo incremental.
+      en: Added publication classification to the pipeline under AACSB and EQUIS criteria and 7 research-methodology variables, using language-model APIs in batch and incremental modes.
+    - es: Desarrollé con asistentes de código basados en IA un dashboard web de 10 secciones, con API propia, autenticación institucional y filtros persistentes, que reemplazó al tablero anterior en Power BI.
+      en: Built, with AI coding assistants, a 10-section web dashboard with its own API, institutional authentication and persistent filters, replacing the previous Power BI dashboard.
+    - es: Asumí la responsabilidad única del ecosistema de datos del área tras una reestructuración del equipo, con documentación técnica reproducible.
+      en: Took sole ownership of the area's data ecosystem after a team restructuring, backed by reproducible technical documentation.
+  stack: [Python, pandas, Parquet, SQL Server, Power BI, Pytest, OpenAlex, LLM APIs]
+
+- id: revista-director
+  kind: volunteer
+  role:
+    es: Director del Área de Marketing
+    en: Marketing Director
+  org: Revista Económica · PUCP
+  location: Lima · PE
+  start: 2024-08
+  end: 2025-01
+  highlights:
+    - es: Dirigí el área y coordiné con los directores de otras áreas la planificación editorial, las colaboraciones y el Macro Report mensual, gestionando el calendario de publicaciones para cumplir plazos.
+      en: Led the area and coordinated editorial planning, collaborations and the monthly Macro Report with the other area directors, managing the publication calendar to meet deadlines.
+    - es: Definí la estrategia de contenidos y gestioné las redes sociales de la revista, orientando las decisiones con los KPIs que había diseñado como miembro.
+      en: Defined the content strategy and ran the magazine's social media, guiding decisions with the KPIs I had designed as a member.
+  stack: [Power BI, Python, R]
+
+- id: revista-member
+  kind: volunteer
+  role:
+    es: Miembro del Área de Marketing
+    en: Marketing Team Member
+  org: Revista Económica · PUCP
+  location: Lima · PE
+  start: 2024-04
+  end: 2024-07
+  highlights:
+    - es: Diseñé y monitoreé KPIs en Power BI, Python y R para evaluar el desempeño del contenido, con un histórico construido mediante web scraping.
+      en: Designed and tracked KPIs in Power BI, Python and R to evaluate content performance, using a history built through web scraping.
+  stack: [Power BI, Python, R, Web scraping]

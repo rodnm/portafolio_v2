@@ -1,0 +1,23 @@
+- id: pucp-bachiller
+  kind: degree
+  title:
+    es: Bachiller en Ciencias Sociales con mención en Economía
+    en: B.A. in Social Sciences, major in Economics
+  org: Pontificia Universidad Católica del Perú
+  note:
+    es: Egresé en diciembre de 2024; el grado de bachiller se entregó en abril de 2025.
+    en: Graduated in December 2024; the bachelor's degree was conferred in April 2025.
+  end: 2024-12
+  conferred: 2025-04
+- id: qlab-diplomatura
+  kind: diploma
+  title:
+    es: "Diplomatura: Ciencia de Datos para las Ciencias Sociales y la Gestión Pública"
+    en: "Diploma: Data Science for the Social Sciences and Public Management"
+  org: Q-LAB PUCP
+  note:
+    es: 240 horas, en curso.
+    en: 240 hours, in progress.
+  start: 2026-01
+  end: 2027-12
+  current: true

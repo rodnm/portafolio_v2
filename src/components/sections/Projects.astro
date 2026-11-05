@@ -1,0 +1,82 @@
+---
+import { getCollection } from "astro:content";
+import Cap from "../hud/Cap.astro";
+import SectionHead from "../hud/SectionHead.astro";
+import ArchiveExplorer from "../projects/ArchiveExplorer.svelte";
+import ProjectRow from "../projects/ProjectRow.astro";
+import VideoFacade from "../projects/VideoFacade.astro";
+import { categories } from "../../content.config";
+import type { Locale } from "../../i18n/locales";
+import type { UI } from "../../i18n/ui";
+import { getProjects } from "../../lib/projects";
+
+interface Props {
+  lang: Locale;
+  t: UI;
+}
+
+const { lang, t } = Astro.props;
+const [lead, ...rest] = await getProjects(lang);
+const archive = (await getCollection("archive")).sort((a, b) => b.data.year - a.data.year);
+const archiveItems = archive.map((entry) => ({
+  id: entry.id,
+  title: entry.data.title[lang],
+  summary: entry.data.summary[lang],
+  metric: entry.data.metric,
+  year: entry.data.year,
+  context: entry.data.context[lang],
+  categories: [...entry.data.categories],
+  stack: entry.data.stack,
+  links: entry.data.links.map((l) => ({ label: t.projects.links[l.kind], url: l.url })),
+}));
+const categoryOptions = categories.map((id) => ({ id, label: t.projects.categories[id] }));
+---
+
+<section id="projects" aria-labelledby="projects-title" class="border-b border-hair">
+  <div class="mx-auto max-w-page px-4 py-20 sm:px-10">
+    <SectionHead
+      id="projects-title"
+      chapter={t.projects.chapter}
+      title={t.projects.title}
+      kicker={t.projects.kicker}
+    />
+
+    <div class="border-b border-hair">
+      {lead && <ProjectRow project={lead} lang={lang} t={t} lead />}
+      <div class="grid gap-x-10 lg:grid-cols-2">
+        {rest.map((project) => (
+          <ProjectRow project={project} lang={lang} t={t} />
+        ))}
+      </div>
+    </div>
+
+    <div class="grid gap-10 py-16 lg:grid-cols-[1fr_1.4fr] lg:items-center">
+      <div class="flex flex-col gap-3">
+        <Cap dim>{t.projects.video}</Cap>
+        <h3 class="text-display font-medium">{t.projects.videoTitle}</h3>
+        <p class="max-w-measure leading-relaxed text-ink-dim">
+          {archive.find((a) => a.id === "clasificador-noticias")?.data.summary[lang]}
+        </p>
+      </div>
+      <VideoFacade
+        id="7wBcUbhUgcs"
+        title={t.projects.videoTitle}
+        play={t.projects.videoPlay}
+        note={t.projects.videoNote}
+      />
+    </div>
+
+    <div class="flex flex-col gap-6">
+      <header class="flex flex-wrap items-end justify-between gap-2 border-b border-hair pb-3">
+        <h3 class="text-display font-medium">{t.projects.archive}</h3>
+        <Cap dim>{t.projects.archiveKicker}</Cap>
+      </header>
+      <ArchiveExplorer
+        client:visible
+        items={archiveItems}
+        categories={categoryOptions}
+        labels={{ filter: t.projects.filter, all: t.projects.all, shown: t.projects.shown }}
+      />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,104 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Brackets from "../hud/Brackets.astro";
+import Cap from "../hud/Cap.astro";
+import LinkChips from "./LinkChips.astro";
+import type { Locale } from "../../i18n/locales";
+import { localePath } from "../../i18n/routes";
+import { ui } from "../../i18n/ui";
+import { type Project, projectCode, projectSlug } from "../../lib/projects";
+
+interface Props {
+  project: Project;
+  next: Project;
+  lang: Locale;
+}
+
+const { project, next, lang } = Astro.props;
+const t = ui[lang];
+const d = project.data;
+const { Content } = await render(project);
+const projectsHref = `${localePath(lang)}#projects`;
+---
+
+<article class="mx-auto max-w-page px-4 py-12 sm:px-10 lg:py-16">
+  <a href={projectsHref} class="font-mono text-cap text-ink-dim uppercase hover:text-accent">
+    {t.projects.back}
+  </a>
+
+  <header class="mt-8 grid gap-8 border-b border-hair pb-10 lg:grid-cols-[1.3fr_1fr]">
+    <div class="flex flex-col gap-4">
+      <Cap dim>
+        {projectCode(d.order)} · {d.year} · {d.context}
+      </Cap>
+      <h1 class="text-section font-medium">{d.title}</h1>
+      <p class="max-w-measure text-lead">
+        <Cap dim class="block">
+          {t.projects.question}
+        </Cap>
+        {d.question}
+      </p>
+      <p class="flex flex-wrap items-baseline gap-x-3 border-l-2 border-accent py-1 pl-4">
+        <span class="sr-only">{t.projects.result}:</span>
+        <span class="text-figure font-semibold text-accent tabular-nums">{d.result.value}</span>
+        <span class="text-ink-dim">{d.result.label}</span>
+      </p>
+      <LinkChips links={d.links} t={t} />
+    </div>
+    <figure class="flex flex-col gap-3">
+      <div class="relative bg-paper p-3">
+        <Image
+          src={d.cover}
+          alt={d.coverAlt}
+          widths={[480, 960]}
+          sizes="(min-width: 1024px) 40vw, 100vw"
+          class="w-full"
+          loading="eager"
+        />
+        <Brackets />
+      </div>
+      <figcaption class="flex flex-col gap-1">
+        <Cap dim>FIG. {projectCode(d.order)}</Cap>
+        <span class="text-sm text-ink-dim">
+          {d.coverAlt} {t.projects.source}.
+        </span>
+      </figcaption>
+    </figure>
+  </header>
+
+  <div class="grid gap-10 pt-10 lg:grid-cols-[1fr_18rem]">
+    <div class="prose-rn">
+      <Content />
+    </div>
+    <aside class="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+      {d.metrics.length > 0 && (
+        <dl class="flex flex-col border-t border-hair">
+          {d.metrics.map((m) => (
+            <div class="flex flex-col-reverse gap-1 border-b border-dashed border-hair py-3">
+              <dt class="text-sm text-ink-dim">{m.label}</dt>
+              <dd class="font-mono text-lg text-accent tabular-nums">{m.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      <div class="flex flex-col gap-2">
+        <Cap dim as="p">
+          {t.projects.tools}
+        </Cap>
+        <ul class="flex flex-wrap gap-2">
+          {d.stack.map((s) => (
+            <li class="border border-hair px-2 py-1 text-sm">{s}</li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <nav class="mt-16 border-t border-rule pt-6" aria-label={t.projects.next}>
+    <a href={localePath(lang, `projects/${projectSlug(next)}`)} class="group flex flex-col gap-2">
+      <Cap dim>{t.projects.next} →</Cap>
+      <span class="text-display font-medium group-hover:text-accent">{next.data.title}</span>
+    </a>
+  </nav>
+</article>

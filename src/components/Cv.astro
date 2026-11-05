@@ -1,0 +1,202 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import { site } from "../data/site";
+import type { Locale } from "../i18n/locales";
+import { localePath } from "../i18n/routes";
+import { ui } from "../i18n/ui";
+import { formatMonth, formatPeriod } from "../lib/format";
+import { getProjects } from "../lib/projects";
+
+// Printable CV built from the same data as the site. No phone number, no references.
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+const profile = (await getEntry("profile", "main"))!.data;
+const experience = (await getCollection("experience")).sort((a, b) =>
+  b.data.start.localeCompare(a.data.start),
+);
+const work = experience.filter((e) => e.data.kind === "work");
+const volunteer = experience.filter((e) => e.data.kind === "volunteer");
+const projects = (await getProjects(lang)).slice(0, 3);
+const education = (await getCollection("education")).sort(
+  (a, b) => Number(a.data.current) - Number(b.data.current),
+);
+const skills = (await getCollection("skills")).sort((a, b) => a.data.order - b.data.order);
+const courses = (await getCollection("credentials"))
+  .filter((c) => c.data.highlight)
+  .sort((a, b) => b.data.date.localeCompare(a.data.date));
+const studies = await getCollection("studies");
+const events = (await getCollection("events")).sort((a, b) =>
+  b.data.date.localeCompare(a.data.date),
+);
+const pdf = `${import.meta.env.BASE_URL}cv/rodrigo-norabuena-cv-${lang}.pdf`;
+---
+
+<div class="mx-auto max-w-3xl bg-paper px-6 py-10 text-sm leading-relaxed print:max-w-none print:bg-transparent print:p-0 print:text-xs print:leading-snug">
+  <nav class="mb-8 flex flex-wrap gap-3 font-mono text-cap uppercase print:hidden">
+    <a href={pdf} class="bg-ink px-3 py-2 text-canvas hover:bg-accent" download>
+      {t.cv.download}
+    </a>
+    <a href={localePath(lang)} class="border border-ink px-3 py-2 hover:text-accent">
+      {t.cv.web} →
+    </a>
+  </nav>
+
+  <header class="border-b-2 border-ink pb-4 text-center">
+    <h1 class="text-3xl font-semibold tracking-tight">{site.name}</h1>
+    <p class="mt-1 font-mono text-cap tracking-widest uppercase">{profile.kicker[lang]}</p>
+    <p class="mt-2 text-ink-dim">
+      {site.city[lang].replace(" · ", ", ")} · <a href={`mailto:${site.email}`}>{site.email}</a> ·
+      linkedin.com/in/rodnm · github.com/rodnm
+    </p>
+  </header>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.profile}
+    </h2>
+    <p class="mt-2">{profile.cvProfile[lang]}</p>
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.experience}
+    </h2>
+    {work.map((e) => (
+      <article class="mt-3">
+        <div class="flex flex-wrap justify-between gap-x-4">
+          <h3 class="font-semibold">
+            {e.data.role[lang]} — {e.data.org}
+          </h3>
+          <span class="text-ink-dim tabular-nums">
+            {formatPeriod(e.data.start, e.data.end, lang)}
+          </span>
+        </div>
+        {e.data.summary && <p class="mt-1">{e.data.summary[lang]}</p>}
+        <ul class="list-dash mt-1 flex flex-col gap-0.5">
+          {e.data.highlights.map((h) => (
+            <li>{h[lang]}</li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.projects}
+    </h2>
+    {projects.map((p) => (
+      <article class="mt-2">
+        <div class="flex flex-wrap justify-between gap-x-4">
+          <h3 class="font-semibold">{p.data.title}</h3>
+          <span class="text-ink-dim">{p.data.year}</span>
+        </div>
+        <p>
+          {p.data.question} <strong>{p.data.result.value}</strong> — {p.data.result.label}.
+        </p>
+        <p class="text-ink-dim">Stack: {p.data.stack.join(", ")}.</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.education}
+    </h2>
+    <ul class="mt-2 flex flex-col gap-1">
+      {education.map((e) => (
+        <li class="flex flex-wrap justify-between gap-x-4">
+          <span>
+            <strong>{e.data.title[lang]}</strong> — {e.data.org}
+            {e.data.note && <span class="block text-ink-dim">{e.data.note[lang]}</span>}
+          </span>
+          <span class="text-ink-dim tabular-nums">
+            {e.data.current ? "2026 – 2027" : (e.data.conferred ?? e.data.end ?? "").slice(0, 4)}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.skills}
+    </h2>
+    <ul class="mt-2 flex flex-col gap-0.5">
+      {skills.map((g) => (
+        <li>
+          <strong>{g.data.label[lang]}:</strong>{" "}
+          {(lang === "en" && g.data.items_en ? g.data.items_en : g.data.items).join(", ")}.
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.volunteer}
+    </h2>
+    {volunteer.map((e) => (
+      <article class="mt-2">
+        <div class="flex flex-wrap justify-between gap-x-4">
+          <h3 class="font-semibold">
+            {e.data.role[lang]} — {e.data.org}
+          </h3>
+          <span class="text-ink-dim tabular-nums">
+            {formatPeriod(e.data.start, e.data.end, lang)}
+          </span>
+        </div>
+        <ul class="list-dash mt-1">
+          {e.data.highlights.map((h) => (
+            <li>{h[lang]}</li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.courses}
+    </h2>
+    <ul class="mt-2 flex flex-col gap-1">
+      {studies.map((s) => (
+        <li class="flex flex-wrap justify-between gap-x-4">
+          <span>
+            <strong>{s.data.title[lang]}</strong> — {s.data.org}
+          </span>
+          <span class="text-ink-dim">{s.data.period[lang]}</span>
+        </li>
+      ))}
+      {courses.map((c) => (
+        <li class="flex flex-wrap justify-between gap-x-4">
+          <span>
+            <strong>{c.data.title[lang]}</strong>
+            {c.data.scholarship && ` (${t.credentials.scholarship.toLowerCase()})`} —{" "}
+            {c.data.issuer}
+          </span>
+          <span class="text-ink-dim tabular-nums">{formatMonth(c.data.date, lang)}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-5 print:mt-3">
+    <h2 class="border-b border-hair pb-1 font-mono text-cap tracking-widest uppercase">
+      {t.cv.achievements}
+    </h2>
+    <ul class="list-dash mt-2 flex flex-col gap-1">
+      {events.map((e) => (
+        <li>
+          <strong>{e.data.result[lang]}</strong> — {e.data.title[lang]} ({e.data.date.slice(0, 4)}).{" "}
+          {e.data.summary[lang]}
+          {e.data.note && <span class="text-ink-dim"> {e.data.note[lang]}</span>}
+        </li>
+      ))}
+    </ul>
+  </section>
+</div>
