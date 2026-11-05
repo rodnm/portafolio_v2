@@ -1,3 +1,30 @@
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Dependencias y builds
+node_modules/
+dist/
+.astro/
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
+
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Herramientas locales
+.atl/
+.vscode/*
+!.vscode/extensions.json
+
+# gentle-ai: configuración generada por máquina (rutas absolutas, hooks del binario local)
+.mcp.json
+.claude/settings.json
+.claude/settings.local.json
+.claude/mcp/
+.claude/CLAUDE.md
+.claude/agents/.gentle-ai-native-agent-ownership.json
