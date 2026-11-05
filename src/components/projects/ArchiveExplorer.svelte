@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { projectButton, projectRow } from "./emphasis";
+
   interface Item {
     id: string;
     title: string;
@@ -67,7 +69,9 @@
 
   <ol class="border-b border-hair">
     {#each visible as item (item.id)}
-      <li class="grid gap-x-6 gap-y-2 border-t border-hair py-5 md:grid-cols-[4rem_1fr_auto]">
+      <li
+        class="grid gap-x-6 gap-y-2 border-t border-hair py-5 md:grid-cols-[4rem_1fr_auto] {projectRow}"
+      >
         <span class="font-mono text-sm text-ink-dim tabular-nums">{item.year}</span>
         <div class="flex flex-col gap-1">
           <h4 class="text-lg font-medium">{item.title}</h4>
@@ -83,11 +87,7 @@
           <ul class="flex flex-wrap gap-2">
             {#each item.links as link (link.url)}
               <li>
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener"
-                  class="inline-flex min-h-9 items-center border border-hair px-2.5 font-mono text-cap uppercase transition-colors hover:border-accent hover:text-accent"
+                <a href={link.url} target="_blank" rel="noopener" class={projectButton}
                   >{link.label} ↗</a
                 >
               </li>

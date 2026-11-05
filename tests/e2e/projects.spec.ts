@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Locator, test } from "@playwright/test";
 import { at } from "./base";
 
 const langs = [
@@ -58,6 +58,46 @@ for (const l of langs) {
     });
   });
 }
+
+test("pointing at a project highlights its row and lights up its buttons", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!!isMobile, "hover needs a pointer");
+  await page.goto("./");
+  const archive = page.locator("#projects ol").last();
+  // The archive is a Svelte island hydrated when visible.
+  await archive.scrollIntoViewIfNeeded();
+  await expect(page.locator("#projects astro-island")).not.toHaveAttribute("ssr", "");
+  const background = (el: Locator) => el.evaluate((node) => getComputedStyle(node).backgroundColor);
+  const none = "rgba(0, 0, 0, 0)";
+  const lists = [page.locator("#projects article"), archive.locator("> li")];
+
+  for (const list of lists) {
+    const [row, other] = [list.nth(0), list.nth(1)];
+    const button = row.locator('a[target="_blank"]').first();
+    const otherButton = other.locator('a[target="_blank"]').first();
+    expect(await background(button)).toBe(none);
+
+    await row.scrollIntoViewIfNeeded();
+    await row.hover({ position: { x: 8, y: 8 } });
+    await expect.poll(() => background(row)).not.toBe(none);
+    await expect.poll(() => background(button)).not.toBe(none);
+    expect(await background(otherButton)).toBe(none);
+
+    // The button under the pointer still stands out from its lit siblings.
+    const sibling = row.locator('a[target="_blank"]').nth(1);
+    if ((await sibling.count()) > 0) {
+      await button.hover();
+      await expect.poll(async () => background(button)).not.toBe(await background(sibling));
+    }
+
+    // Keyboard users get the same emphasis when a button inside the row has focus.
+    await page.mouse.move(0, 0);
+    await otherButton.focus();
+    await expect.poll(() => background(other)).not.toBe(none);
+  }
+});
 
 test("video loads only after the visitor asks for it", async ({ page }) => {
   await page.goto("./");
