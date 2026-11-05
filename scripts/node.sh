@@ -31,9 +31,7 @@ esac
 TMP="${TMPDIR:-/tmp}"
 # Vite probes these WSL markers with existsSync, which throws under the permission model.
 read_paths=("$ROOT" "$TMP" /proc/sys/fs/binfmt_misc/WSLInterop /run/WSL)
-# No grant may extend the name node_modules/.vitest (e.g. .vitest-cache/): Node then denies
-# mkdir on .vitest itself, and Vitest cannot create its API token on a fresh checkout.
-write_paths=("$TMP" "$ROOT/.astro" "$ROOT/node_modules/.astro" "$ROOT/node_modules/.vite" "$ROOT/node_modules/.vitest" "$ROOT/node_modules/.vite-temp")
+write_paths=("$TMP" "$ROOT/.astro" "$ROOT/node_modules/.astro" "$ROOT/node_modules/.vite" "$ROOT/node_modules/.vitest" "$ROOT/node_modules/.vitest-cache" "$ROOT/node_modules/.vite-temp")
 
 case "$tool" in
   astro) write_paths+=("$ROOT/dist" "$ROOT/src/assets/generated") ;;
@@ -69,4 +67,7 @@ for p in "${write_paths[@]}"; do flags+=("--allow-fs-write=${p%/}/"); done
 export ASTRO_TELEMETRY_DISABLED=1
 # Keep tool preference files inside the project so they stay within the allowlist.
 export XDG_CONFIG_HOME="$ROOT/.astro/xdg"
+# Vitest creates its API token under XDG_DATA_HOME first. Its fallback, node_modules/.vitest,
+# fails on a fresh checkout: next to the .vitest-cache/ grant, Node denies mkdir on .vitest itself.
+export XDG_DATA_HOME="$ROOT/.astro/xdg-data"
 exec "$NODE_BIN" "${flags[@]}" "$entry" "$@"
