@@ -1,12 +1,8 @@
 # Portafolio v2
 
-Documentos que respaldan mi trayectoria académica y profesional.
+Sitio personal de Rodrigo Andrés Norabuena Mascaraqui, economista (PUCP) enfocado en análisis cuantitativo aplicado.
 
-## Contenido
+- Bilingüe (ES / EN), pensado primero para el celular.
+- Publicado con GitHub Pages en `https://rodnm.github.io/portafolio_v2/`.
 
-| Carpeta | Qué contiene |
-| --- | --- |
-| [`docs/Diplomas de grado`](docs/Diplomas%20de%20grado) | Diplomas de grado académico |
-| [`docs/Certificaciones`](docs/Certificaciones) | Certificados de cursos, programas y conferencias (PUCP, UNMSM, IEEE, Coursera, Udemy, institutos e idiomas) |
-| [`docs/Hackathones`](docs/Hackathones) | Constancias de participación en hackathones |
-| [`docs/Datathones`](docs/Datathones) | Constancias de participación en datathones |
+Los documentos originales que respaldan la trayectoria (diplomas, certificados, constancias) se guardan en un repositorio privado. En este repositorio solo hay miniaturas públicas sin datos personales.
