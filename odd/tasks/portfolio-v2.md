@@ -62,7 +62,7 @@ Engram: `odd/portfolio-v2/tasks` · Toolchain: pnpm 10.28.0 + Node 26.13.0 LTS c
 | T10 Enlaces: video de huella minera e informe de riesgo crediticio | S22, S23 | inline | hecho | `9e08de0`; unit ROJO (2 fallos: `reel.mp4` y el informe directo) → VERDE 7/7; guarda contra tokens en links |
 | T11 Resaltado al pasar el mouse en filas de proyectos y archivo | S24 | inline | hecho | `21ceb90`; e2e ROJO (la fila no cambiaba de fondo) → VERDE; suite 116 e2e, 28 unit |
 | T12 Sección de publicaciones | S25 | — | pendiente: decisión del usuario | — |
-| T13 Stack respaldado por las certificaciones | S26 | inline | en curso | — |
+| T13 Stack respaldado por las certificaciones | S26 | inline | hecho | unit `skills.test.ts` ROJO (elemento partido, faltaban AWS/RAG) → VERDE; 116 e2e; CV ES/EN regenerado en 2 páginas |
 
 ## Log
 
